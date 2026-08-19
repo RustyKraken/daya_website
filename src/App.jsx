@@ -4,7 +4,8 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const media = (index) => `/media/daya-${String(index).padStart(2, '0')}.jpg`;
+const asset = (path) => `${import.meta.env.BASE_URL}${path.replace(/^\/+/, '')}`;
+const media = (index) => asset(`media/daya-${String(index).padStart(2, '0')}.jpg`);
 const DIGITAL_MENU_URL = '#menu'; // Replace with DAYA's external digital menu URL when available.
 
 const floatingImages = [
@@ -146,8 +147,8 @@ function MenuOverlay({ open, onClose }) {
     >
       <div className="menu-header">
         <a className="menu-signature" href="#home" onClick={() => onClose(false)} tabIndex={open ? 0 : -1} aria-label="DAYA home">
-          <img className="menu-brand-icon" src="/media/daya-icon.png" alt="" />
-          <img className="menu-brand-wordmark" src="/media/daya-wordmark.png" alt="" />
+          <img className="menu-brand-icon" src={asset('media/daya-icon.png')} alt="" />
+          <img className="menu-brand-wordmark" src={asset('media/daya-wordmark.png')} alt="" />
         </a>
         <button ref={closeRef} className="close-menu" onClick={onClose} aria-label="Close navigation">
           <span />
@@ -222,7 +223,7 @@ function SiteNav({ onMenuOpen, menuOpen, menuTriggerRef }) {
         </span>
       </button>
       <a className="hero-wordmark" href="#home" aria-label="DAYA home">
-        <img src="/media/daya-wordmark.png" alt="" />
+        <img src={asset('media/daya-wordmark.png')} alt="" />
       </a>
       <span className="nav-location">Ibiza · 38°59′N</span>
     </header>
@@ -268,7 +269,7 @@ function Hero() {
         poster={media(1)}
         aria-hidden="true"
       >
-        <source src="/media/daya-hero.mp4" type="video/mp4" />
+        <source src={asset('media/daya-hero.mp4')} type="video/mp4" />
       </video>
       <div className="hero-scrim" />
 
@@ -1102,7 +1103,7 @@ function DayaFooter() {
           </nav>
 
           <a className="footer-brand" href="#home" aria-label="DAYA home">
-            <img src="/media/daya-wordmark.png" alt="DAYA" />
+            <img src={asset('media/daya-wordmark.png')} alt="DAYA" />
           </a>
 
           <nav className="footer-nav footer-nav-secondary" aria-label="DAYA links">
