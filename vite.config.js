@@ -1,7 +1,16 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import { fileURLToPath } from 'node:url';
 
 export default defineConfig({
   plugins: [react()],
   base: '/daya_website/',
+  build: {
+    rollupOptions: {
+      input: {
+        main: fileURLToPath(new URL('./index.html', import.meta.url)),
+        comingSoon: fileURLToPath(new URL('./coming-soon/index.html', import.meta.url)),
+      },
+    },
+  },
 });
