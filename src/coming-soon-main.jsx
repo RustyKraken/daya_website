@@ -12,13 +12,13 @@ function ComingSoon() {
     <main className="coming-soon" aria-labelledby="coming-soon-title">
       <div className="coming-soon-background" aria-hidden="true" />
       <div className="coming-soon-decorations" aria-hidden="true">
-        <img className="pomegranate pomegranate-left" src={asset('media/daya-pomegranate-left.png')} alt="" fetchPriority="high" />
-        <img className="pomegranate pomegranate-right" src={asset('media/daya-pomegranate-right.png')} alt="" fetchPriority="high" />
+        <img className="pomegranate pomegranate-left" src={asset('media/daya-pomegranate-left.avif')} alt="" fetchPriority="high" />
+        <img className="pomegranate pomegranate-right" src={asset('media/daya-pomegranate-right.avif')} alt="" fetchPriority="high" />
       </div>
 
       <header className="coming-soon-header">
         <a className="coming-soon-brand" href={import.meta.env.BASE_URL} aria-label="DAYA home">
-          <img src={asset('media/daya-wordmark.png')} alt="DAYA" />
+          <img src={asset('media/daya-wordmark.avif')} alt="DAYA" />
         </a>
         <span className="coming-soon-location">Ibiza · 38°59′N</span>
       </header>

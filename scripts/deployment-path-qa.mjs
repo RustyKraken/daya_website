@@ -18,6 +18,7 @@ async function walk(directory) {
 }
 
 const files = await walk(distDir);
+assert.equal(files.some(file => /\.(png|jpe?g|webp)$/i.test(file)), false, 'Legacy raster images remain in the build');
 const textFiles = files.filter((file) => textExtensions.has(path.extname(file)));
 const rootReferences = new Set();
 
@@ -53,11 +54,20 @@ try {
     page.on('response', (response) => { if (response.status() >= 400) errors.push(`${response.status()} ${response.url()}`); });
 
     const response = await page.goto(`${previewOrigin}${pathname}`, { waitUntil: 'networkidle' });
+    const images = await page.evaluate(async () => {
+      const images = [...document.images];
+      for (const image of images) image.loading = 'eager';
+      await Promise.all(images.map(image => image.decode()));
+      return images.map(image => ({ src: image.currentSrc, width: image.naturalWidth, height: image.naturalHeight }));
+    });
+    assert.ok(images.length > 0);
+    assert.ok(images.every(image => image.src.endsWith('.avif') && image.width > 0 && image.height > 0), 'All page images must decode as AVIF');
     const result = {
       pathname,
       status: response.status(),
       title: await page.title(),
       mounted: await page.locator('#root > *').count() > 0,
+      decodedImages: images.length,
       errors,
     };
     assert.equal(result.status, 200);

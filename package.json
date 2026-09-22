@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
+    "optimize:images": "node scripts/optimize-images.mjs",
     "qa:coming-soon": "node scripts/coming-soon-qa.mjs",
     "qa:deployment": "node scripts/deployment-path-qa.mjs"
   },
@@ -20,6 +21,7 @@
   "devDependencies": {
     "@vitejs/plugin-react": "^5.0.1",
     "playwright": "^1.62.1",
+    "sharp": "^0.35.4",
     "vite": "^7.1.2"
   }
 }
