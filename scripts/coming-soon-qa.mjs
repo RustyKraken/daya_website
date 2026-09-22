@@ -65,7 +65,6 @@ try {
     assert.equal(await page.locator('form, input').count(), 0);
     await page.mouse.wheel(0, 1000);
     assert.equal(await page.evaluate(() => scrollY), 0);
-    assert.equal(await page.locator('.coming-soon-background').evaluate(el => getComputedStyle(el).backgroundColor), 'rgb(212, 175, 55)');
     const fruitPositions = () => page.locator('.pomegranate').evaluateAll(images => images.map(image => {
       const { x, y } = image.getBoundingClientRect();
       return { x, y, running: image.getAnimations().some(animation => animation.playState === 'running') };

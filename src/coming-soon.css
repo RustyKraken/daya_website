@@ -4,8 +4,8 @@
   --brown: #3b2a21;
   --display: 'Cormorant Garamond', Georgia, serif;
   font-family: 'Manrope', Arial, sans-serif;
-  color: var(--brown);
-  background: var(--gold);
+  color: var(--cream);
+  background: #292117;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -14,7 +14,7 @@
 html, body, #root { width: 100%; height: 100%; margin: 0; overflow: hidden; }
 body { min-width: 0; }
 a { color: inherit; text-decoration: none; -webkit-tap-highlight-color: transparent; }
-a:focus-visible { outline: 2px solid var(--brown); outline-offset: 5px; }
+a:focus-visible { outline: 2px solid var(--gold); outline-offset: 5px; }
 ::selection { color: var(--cream); background: #742a3b; }
 
 .coming-soon {
@@ -35,7 +35,19 @@ a:focus-visible { outline: 2px solid var(--brown); outline-offset: 5px; }
 }
 .coming-soon-background {
   z-index: 0;
-  background: var(--gold);
+  background:
+    radial-gradient(ellipse at 48% 26%, rgb(212 175 55 / 28%), transparent 65%),
+    radial-gradient(ellipse at 90% 65%, rgb(94 42 33 / 22%), transparent 60%),
+    radial-gradient(ellipse at 50% 40%, transparent 25%, rgb(16 12 9 / 40%) 100%),
+    linear-gradient(165deg, #655531 0%, #695326 43%, #292117 100%);
+}
+.coming-soon-background::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.18;
+  mix-blend-mode: soft-light;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Cpath fill='%23fff' filter='url(%23grain)' d='M0 0h180v180H0z'/%3E%3C/svg%3E");
 }
 .coming-soon-decorations {
   z-index: 1;
@@ -48,7 +60,7 @@ a:focus-visible { outline: 2px solid var(--brown); outline-offset: 5px; }
   width: min(58vw, 1120px);
   height: 118%;
   object-fit: contain;
-  filter: drop-shadow(20px 15px 38px rgb(59 42 33 / 22%));
+  filter: brightness(0.8) saturate(0.85) drop-shadow(20px 15px 38px rgb(0 0 0 / 30%));
   user-select: none;
   will-change: translate, rotate;
 }
@@ -63,7 +75,7 @@ a:focus-visible { outline: 2px solid var(--brown); outline-offset: 5px; }
   gap: 24px;
 }
 .coming-soon-brand { display: block; width: 112px; flex-shrink: 0; }
-.coming-soon-brand img { display: block; width: 100%; height: auto; filter: brightness(0); opacity: 0.78; }
+.coming-soon-brand img { display: block; width: 100%; height: auto; filter: brightness(0) invert(1); opacity: 0.95; }
 .coming-soon-location {
   font-size: 10px;
   font-weight: 500;
@@ -103,14 +115,14 @@ a:focus-visible { outline: 2px solid var(--brown); outline-offset: 5px; }
   gap: 32px;
   min-width: 0;
   padding-top: 25px;
-  border-top: 1px solid rgb(59 42 33 / 30%);
+  border-top: 1px solid rgb(245 239 229 / 25%);
 }
 .coming-soon-signature { margin: 0; font-family: var(--display); font-size: 26px; line-height: 1.05; }
 .coming-soon-connect { justify-self: center; }
-.coming-soon-eyebrow { font-size: 9px; font-weight: 500; letter-spacing: 0.17em; line-height: 1.8; text-transform: uppercase; color: var(--brown); }
+.coming-soon-eyebrow { font-size: 9px; font-weight: 500; letter-spacing: 0.17em; line-height: 1.8; text-transform: uppercase; color: #dcc8a3; }
 .coming-soon-connect nav { display: flex; gap: 26px; margin-top: 10px; }
 .coming-soon-connect a { padding: 5px 0; font-size: 12px; text-underline-offset: 5px; text-decoration-thickness: 1px; }
-.coming-soon-copyright { justify-self: end; margin: 0 0 5px; font-size: 10px; letter-spacing: 0.04em; color: var(--brown); }
+.coming-soon-copyright { justify-self: end; margin: 0 0 5px; font-size: 10px; letter-spacing: 0.04em; color: rgb(245 239 229 / 80%); }
 .coming-soon-footer a, .coming-soon-brand { transition: opacity 160ms ease; }
 .coming-soon-footer a:hover, .coming-soon-brand:hover { opacity: 0.7; }
 .coming-soon-connect a:hover { text-decoration-line: underline; }
