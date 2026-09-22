@@ -52,7 +52,7 @@ a:focus-visible { outline: 2px solid var(--gold); outline-offset: 5px; }
 .coming-soon-decorations {
   z-index: 1;
   overflow: hidden;
-  mask-image: linear-gradient(to bottom, transparent 75px, #000 175px, #000 calc(100% - 240px), transparent calc(100% - 150px));
+  mask-image: linear-gradient(to bottom, rgb(0 0 0 / 65%) 0%, #000 18%, #000 78%, rgb(0 0 0 / 65%) 100%);
 }
 .pomegranate {
   position: absolute;
