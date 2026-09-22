@@ -15,7 +15,6 @@ function ComingSoon() {
         <img className="pomegranate pomegranate-left" src={asset('media/daya-pomegranate-left.png')} alt="" fetchPriority="high" />
         <img className="pomegranate pomegranate-right" src={asset('media/daya-pomegranate-right.png')} alt="" fetchPriority="high" />
       </div>
-      <div className="coming-soon-atmosphere" aria-hidden="true" />
 
       <header className="coming-soon-header">
         <a className="coming-soon-brand" href={import.meta.env.BASE_URL} aria-label="DAYA home">

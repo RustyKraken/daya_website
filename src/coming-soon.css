@@ -1,10 +1,11 @@
 :root {
   --cream: #f5efe5;
-  --sand: #dcc8a3;
+  --gold: #d4af37;
+  --brown: #3b2a21;
   --display: 'Cormorant Garamond', Georgia, serif;
   font-family: 'Manrope', Arial, sans-serif;
-  color: var(--cream);
-  background: #120e13;
+  color: var(--brown);
+  background: var(--gold);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -13,7 +14,7 @@
 html, body, #root { width: 100%; height: 100%; margin: 0; overflow: hidden; }
 body { min-width: 0; }
 a { color: inherit; text-decoration: none; -webkit-tap-highlight-color: transparent; }
-a:focus-visible { outline: 2px solid var(--sand); outline-offset: 5px; }
+a:focus-visible { outline: 2px solid var(--brown); outline-offset: 5px; }
 ::selection { color: var(--cream); background: #742a3b; }
 
 .coming-soon {
@@ -27,34 +28,32 @@ a:focus-visible { outline: 2px solid var(--sand); outline-offset: 5px; }
   overflow: hidden;
   padding: 38px 4.4vw max(28px, env(safe-area-inset-bottom));
 }
-.coming-soon-background, .coming-soon-decorations, .coming-soon-atmosphere {
+.coming-soon-background, .coming-soon-decorations {
   position: absolute;
   inset: 0;
   pointer-events: none;
 }
 .coming-soon-background {
   z-index: 0;
-  background:
-    radial-gradient(ellipse at 50% 20%, #3e475360, transparent 65%),
-    linear-gradient(180deg, #222e3b 0%, #3c2c38 53%, #160d14 100%);
+  background: var(--gold);
 }
-.coming-soon-decorations { z-index: 1; overflow: hidden; }
+.coming-soon-decorations {
+  z-index: 1;
+  overflow: hidden;
+  mask-image: linear-gradient(to bottom, transparent 75px, #000 175px, #000 calc(100% - 240px), transparent calc(100% - 150px));
+}
 .pomegranate {
   position: absolute;
   display: block;
   width: min(58vw, 1120px);
   height: 118%;
   object-fit: contain;
-  filter: brightness(0.7) saturate(0.72) drop-shadow(20px 15px 38px rgb(0 0 0 / 35%));
+  filter: drop-shadow(20px 15px 38px rgb(59 42 33 / 22%));
   user-select: none;
   will-change: translate, rotate;
 }
 .pomegranate-left { left: -27%; top: -13%; transform: rotate(13deg); object-position: right center; }
 .pomegranate-right { right: -27%; bottom: -13%; transform: rotate(-13deg); object-position: left center; }
-.coming-soon-atmosphere {
-  z-index: 2;
-  background: radial-gradient(ellipse at 50% 37%, transparent 30%, rgb(6 3 8 / 27%) 100%);
-}
 .coming-soon-header {
   position: relative;
   z-index: 10;
@@ -64,7 +63,7 @@ a:focus-visible { outline: 2px solid var(--sand); outline-offset: 5px; }
   gap: 24px;
 }
 .coming-soon-brand { display: block; width: 112px; flex-shrink: 0; }
-.coming-soon-brand img { display: block; width: 100%; height: auto; filter: brightness(0) invert(1); opacity: 0.95; }
+.coming-soon-brand img { display: block; width: 100%; height: auto; filter: brightness(0); opacity: 0.78; }
 .coming-soon-location {
   font-size: 10px;
   font-weight: 500;
@@ -104,14 +103,14 @@ a:focus-visible { outline: 2px solid var(--sand); outline-offset: 5px; }
   gap: 32px;
   min-width: 0;
   padding-top: 25px;
-  border-top: 1px solid rgb(245 239 229 / 25%);
+  border-top: 1px solid rgb(59 42 33 / 30%);
 }
 .coming-soon-signature { margin: 0; font-family: var(--display); font-size: 26px; line-height: 1.05; }
 .coming-soon-connect { justify-self: center; }
-.coming-soon-eyebrow { font-size: 9px; font-weight: 500; letter-spacing: 0.17em; line-height: 1.8; text-transform: uppercase; color: var(--sand); }
+.coming-soon-eyebrow { font-size: 9px; font-weight: 500; letter-spacing: 0.17em; line-height: 1.8; text-transform: uppercase; color: var(--brown); }
 .coming-soon-connect nav { display: flex; gap: 26px; margin-top: 10px; }
 .coming-soon-connect a { padding: 5px 0; font-size: 12px; text-underline-offset: 5px; text-decoration-thickness: 1px; }
-.coming-soon-copyright { justify-self: end; margin: 0 0 5px; font-size: 10px; letter-spacing: 0.04em; color: rgb(245 239 229 / 80%); }
+.coming-soon-copyright { justify-self: end; margin: 0 0 5px; font-size: 10px; letter-spacing: 0.04em; color: var(--brown); }
 .coming-soon-footer a, .coming-soon-brand { transition: opacity 160ms ease; }
 .coming-soon-footer a:hover, .coming-soon-brand:hover { opacity: 0.7; }
 .coming-soon-connect a:hover { text-decoration-line: underline; }
@@ -126,9 +125,9 @@ a:focus-visible { outline: 2px solid var(--sand); outline-offset: 5px; }
   .coming-soon-brand { width: 87px; }
   .coming-soon-location { font-size: 8px; letter-spacing: 0.12em; }
   .coming-soon-hero h1 { font-size: clamp(62px, 19vw, 100px); line-height: 0.86; }
-  .pomegranate { width: 100vw; height: 70%; opacity: 0.72; }
-  .pomegranate-left { left: -76%; top: -24%; transform: rotate(25deg); }
-  .pomegranate-right { right: -72%; bottom: -4%; transform: rotate(-20deg); }
+  .pomegranate { width: 100vw; height: 70%; }
+  .pomegranate-left { left: -65%; top: -24%; transform: rotate(25deg); }
+  .pomegranate-right { right: -62%; bottom: -4%; transform: rotate(-20deg); }
   .coming-soon-footer { grid-template-columns: 1fr auto; gap: 25px 16px; padding-top: 22px; }
   .coming-soon-signature { font-size: 23px; }
   .coming-soon-connect { justify-self: end; }
@@ -155,19 +154,17 @@ a:focus-visible { outline: 2px solid var(--sand); outline-offset: 5px; }
   .pomegranate-right { right: -58%; transform: none; }
 }
 @media (prefers-reduced-motion: no-preference) {
-  .pomegranate-left { animation: pomegranate-drift-left 9s ease-in-out infinite alternate; }
-  .pomegranate-right { animation: pomegranate-drift-right 11s ease-in-out -3s infinite alternate; }
+  .pomegranate-left { animation: pomegranate-drift-left 5s ease-in-out -1.5s infinite alternate; }
+  .pomegranate-right { animation: pomegranate-drift-right 6s ease-in-out -3s infinite alternate; }
 
   @keyframes pomegranate-drift-left {
-    from { translate: 0 0; rotate: 0deg; }
-    50% { translate: 1px -3px; rotate: 0.25deg; }
-    to { translate: 3px -7px; rotate: 0.5deg; }
+    from { translate: -12px 30px; rotate: -4deg; }
+    to { translate: clamp(24px, 3vw, 56px) -55px; rotate: 5deg; }
   }
 
   @keyframes pomegranate-drift-right {
-    from { translate: 0 0; rotate: 0deg; }
-    50% { translate: -1px 3px; rotate: -0.25deg; }
-    to { translate: -3px 7px; rotate: -0.5deg; }
+    from { translate: 12px -35px; rotate: 4deg; }
+    to { translate: clamp(-56px, -3vw, -24px) 55px; rotate: -5deg; }
   }
 }
 

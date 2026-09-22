@@ -13,7 +13,7 @@ const sizes = [[375, 667], [390, 844], [768, 1024], [1440, 900], [1920, 1080], [
 
 try {
   for (const [width, height] of sizes) {
-    const page = await browser.newPage({ viewport: { width, height }, deviceScaleFactor: 1 });
+    const page = await browser.newPage({ viewport: { width, height }, deviceScaleFactor: 1, reducedMotion: 'no-preference' });
     page.on('pageerror', error => errors.push(error.message));
     page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
     await page.goto(`${baseURL}coming-soon/`);
@@ -65,6 +65,19 @@ try {
     assert.equal(await page.locator('form, input').count(), 0);
     await page.mouse.wheel(0, 1000);
     assert.equal(await page.evaluate(() => scrollY), 0);
+    assert.equal(await page.locator('.coming-soon-background').evaluate(el => getComputedStyle(el).backgroundColor), 'rgb(212, 175, 55)');
+    const fruitPositions = () => page.locator('.pomegranate').evaluateAll(images => images.map(image => {
+      const { x, y } = image.getBoundingClientRect();
+      return { x, y, running: image.getAnimations().some(animation => animation.playState === 'running') };
+    }));
+    const before = await fruitPositions();
+    await page.waitForTimeout(1500);
+    const after = await fruitPositions();
+    for (let index = 0; index < before.length; index++) {
+      assert.ok(before[index].running, 'Pomegranate animation must be running');
+      assert.ok(Math.hypot(after[index].x - before[index].x, after[index].y - before[index].y) > 15,
+        `Pomegranate ${index} motion must be visible at ${width}x${height}`);
+    }
     await page.screenshot({ path: path.join(outputDir, `${width}x${height}.png`) });
     report.viewports.push(metrics);
     await page.close();
@@ -77,10 +90,12 @@ try {
   assert.equal(await brand.evaluate(el => document.activeElement === el), true);
   assert.notEqual(await brand.evaluate(el => getComputedStyle(el).outlineStyle), 'none');
   assert.equal(await brand.evaluate(el => getComputedStyle(el).transitionDuration), '0s');
+  assert.deepEqual(await page.locator('.pomegranate').evaluateAll(images => images.map(image => getComputedStyle(image).animationName)), ['none', 'none']);
   assert.equal(await page.getByRole('link', { name: 'Instagram', exact: true }).getAttribute('href'), 'https://www.instagram.com/dayaibiza/');
   assert.equal(await page.getByRole('link', { name: 'Get in touch', exact: true }).getAttribute('href'), 'mailto:hello@dayaibiza.com');
   report.interactions.links = 'Instagram and email destinations verified; logo keyboard focus visible';
-  report.interactions.reducedMotion = 'transitions disabled';
+  report.interactions.reducedMotion = 'animations and transitions disabled';
+  report.interactions.motion = 'both pomegranates visibly move within 1.5 seconds at every viewport';
   await brand.click();
   await page.getByRole('button', { name: 'Open navigation' }).waitFor();
   report.interactions.home = 'logo opens original homepage';
