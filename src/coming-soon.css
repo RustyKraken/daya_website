@@ -47,6 +47,7 @@ a:focus-visible { outline: 2px solid var(--sand); outline-offset: 5px; }
   object-fit: contain;
   filter: brightness(0.7) saturate(0.72) drop-shadow(20px 15px 38px rgb(0 0 0 / 35%));
   user-select: none;
+  will-change: translate, rotate;
 }
 .pomegranate-left { left: -27%; top: -13%; transform: rotate(13deg); object-position: right center; }
 .pomegranate-right { right: -27%; bottom: -13%; transform: rotate(-13deg); object-position: left center; }
@@ -153,6 +154,23 @@ a:focus-visible { outline: 2px solid var(--sand); outline-offset: 5px; }
   .pomegranate-left { left: -58%; transform: none; }
   .pomegranate-right { right: -58%; transform: none; }
 }
+@media (prefers-reduced-motion: no-preference) {
+  .pomegranate-left { animation: pomegranate-drift-left 9s ease-in-out infinite alternate; }
+  .pomegranate-right { animation: pomegranate-drift-right 11s ease-in-out -3s infinite alternate; }
+
+  @keyframes pomegranate-drift-left {
+    from { translate: 0 0; rotate: 0deg; }
+    50% { translate: 1px -3px; rotate: 0.25deg; }
+    to { translate: 3px -7px; rotate: 0.5deg; }
+  }
+
+  @keyframes pomegranate-drift-right {
+    from { translate: 0 0; rotate: 0deg; }
+    50% { translate: -1px 3px; rotate: -0.25deg; }
+    to { translate: -3px 7px; rotate: -0.5deg; }
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }

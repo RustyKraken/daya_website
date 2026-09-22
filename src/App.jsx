@@ -766,6 +766,21 @@ const storyEntries = [
   },
 ];
 
+function StorySeeds({ count }) {
+  return (
+    <span className="story-seeds" data-count={count}>
+      {Array.from({ length: count }, (_, index) => (
+        <svg className="story-seed" viewBox="0 0 24 32" key={index} focusable="false" aria-hidden="true">
+          <path className="story-seed-body" d="M12 3.7c-1.2 1.2-5.1 4.1-6.2 8.3C4.1 18.6 7 25.9 12 28.3c5-2.4 7.9-9.7 6.2-16.3C17.1 7.8 13.2 4.9 12 3.7Z" />
+          <path className="story-seed-membrane" d="M12 6.1c-.7 1.7-2.1 3-3.1 4.8-.8 1.4-1.3 3-1.3 4.8" />
+          <path className="story-seed-highlight" d="M10.8 9.3c-1.2 1.8-2.1 3.7-2.2 5.5" />
+          <circle className="story-seed-glint" cx="14.8" cy="11.2" r="1.15" />
+        </svg>
+      ))}
+    </span>
+  );
+}
+
 function StoryTimeline() {
   const sectionRef = useRef(null);
   const listRef = useRef(null);
@@ -852,7 +867,7 @@ function StoryTimeline() {
             <figure className="story-image-card" style={{ '--story-rotation': `${entry.rotation}deg` }}>
               <img src={media(entry.image)} alt={entry.alt} loading="lazy" />
             </figure>
-            <div className="story-marker" aria-hidden="true"><span>{String(index + 1).padStart(2, '0')}</span></div>
+            <div className="story-marker" aria-hidden="true"><StorySeeds count={index + 1} /></div>
             <div className="story-copy">
               <p className="story-label">{entry.label}</p>
               <h3>{entry.title}</h3>
