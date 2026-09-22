@@ -3,7 +3,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { chromium } from 'playwright';
 
-const baseURL = process.env.QA_BASE_URL || 'http://127.0.0.1:5173/daya_website/';
+const baseURL = process.env.QA_BASE_URL || 'http://127.0.0.1:5173/';
 const outputDir = path.resolve('output/coming-soon-qa');
 await fs.mkdir(outputDir, { recursive: true });
 const browser = await chromium.launch({ channel: 'chrome', headless: true });

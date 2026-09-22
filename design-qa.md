@@ -15,7 +15,7 @@ Original composition source: `C:/Users/rusty/AppData/Local/Temp/codex-clipboard-
 
 ## Evidence
 
-Preview: `http://127.0.0.1:5173/daya_website/coming-soon/`.
+Preview: `http://127.0.0.1:5173/coming-soon/`.
 
 Current screenshots: `output/coming-soon-qa/{375x667,390x844,768x1024,1440x900,1920x1080,320x568,844x390}.png`.
 All captures use matching CSS/pixel dimensions and deviceScaleFactor 1.

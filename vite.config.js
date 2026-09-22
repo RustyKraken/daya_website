@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url';
 
 export default defineConfig({
   plugins: [react()],
-  base: '/daya_website/',
+  base: '/',
   build: {
     rollupOptions: {
       input: {
