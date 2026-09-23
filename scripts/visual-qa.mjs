@@ -37,7 +37,7 @@ for (const viewport of viewports) {
     console.error(`[${viewport.name}] ${error.message}`);
   });
 
-  await page.goto('http://127.0.0.1:5173', { waitUntil: 'networkidle' });
+  await page.goto('http://127.0.0.1:5173/preview/', { waitUntil: 'networkidle' });
   await page.waitForTimeout(1200);
   await page.screenshot({ path: path.join(outputDir, `${viewport.name}-01-hero.png`) });
   const heroVideo = await page.locator('.hero-video').evaluate((video) => ({

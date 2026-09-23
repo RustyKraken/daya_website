@@ -42,7 +42,7 @@ const browser = await chromium.launch({ channel: 'chrome', headless: true });
 const pages = [];
 
 try {
-  for (const pathname of ['/', '/coming-soon/']) {
+  for (const pathname of ['/', '/coming-soon/', '/preview/']) {
     const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
     const errors = [];
     await page.route('**/*', (route) => {
@@ -54,6 +54,13 @@ try {
     page.on('response', (response) => { if (response.status() >= 400) errors.push(`${response.status()} ${response.url()}`); });
 
     const response = await page.goto(`${previewOrigin}${pathname}`, { waitUntil: 'networkidle' });
+    if (pathname === '/preview/') {
+      await page.getByRole('button', { name: 'Open navigation' }).waitFor();
+      assert.equal(await page.locator('meta[name="robots"]').getAttribute('content'), 'noindex, nofollow');
+    } else {
+      await page.locator('.coming-soon-hero').waitFor();
+      assert.equal(await page.locator('a[href*="preview"]').count(), 0);
+    }
     const images = await page.evaluate(async () => {
       const images = [...document.images];
       for (const image of images) image.loading = 'eager';

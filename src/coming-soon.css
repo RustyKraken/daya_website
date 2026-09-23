@@ -1,11 +1,12 @@
 :root {
+  --turquoise: #0d5c63;
   --cream: #f5efe5;
   --gold: #d4af37;
   --brown: #3b2a21;
   --display: 'Cormorant Garamond', Georgia, serif;
   font-family: 'Manrope', Arial, sans-serif;
   color: var(--cream);
-  background: #292117;
+  background: var(--turquoise);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -35,17 +36,24 @@ a:focus-visible { outline: 2px solid var(--gold); outline-offset: 5px; }
 }
 .coming-soon-background {
   z-index: 0;
+  overflow: hidden;
   background:
-    radial-gradient(ellipse at 48% 26%, rgb(212 175 55 / 28%), transparent 65%),
-    radial-gradient(ellipse at 90% 65%, rgb(94 42 33 / 22%), transparent 60%),
-    radial-gradient(ellipse at 50% 40%, transparent 25%, rgb(16 12 9 / 40%) 100%),
-    linear-gradient(165deg, #655531 0%, #695326 43%, #292117 100%);
+    radial-gradient(ellipse at 50% 40%, transparent 25%, rgb(3 30 33 / 48%) 100%),
+    var(--turquoise);
+}
+.coming-soon-background::before {
+  content: '';
+  position: absolute;
+  inset: -25%;
+  background:
+    radial-gradient(ellipse at 35% 30%, rgb(63 178 173 / 40%), transparent 48%),
+    radial-gradient(ellipse at 75% 70%, rgb(35 135 145 / 32%), transparent 50%);
 }
 .coming-soon-background::after {
   content: '';
   position: absolute;
   inset: 0;
-  opacity: 0.18;
+  opacity: 0.28;
   mix-blend-mode: soft-light;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Cpath fill='%23fff' filter='url(%23grain)' d='M0 0h180v180H0z'/%3E%3C/svg%3E");
 }
@@ -166,8 +174,14 @@ a:focus-visible { outline: 2px solid var(--gold); outline-offset: 5px; }
   .pomegranate-right { right: -58%; transform: none; }
 }
 @media (prefers-reduced-motion: no-preference) {
+  .coming-soon-background::before { animation: turquoise-glow-drift 18s ease-in-out infinite alternate; }
   .pomegranate-left { animation: pomegranate-drift-left 5s ease-in-out -1.5s infinite alternate; }
   .pomegranate-right { animation: pomegranate-drift-right 6s ease-in-out -3s infinite alternate; }
+
+  @keyframes turquoise-glow-drift {
+    from { transform: translate3d(-6%, -4%, 0) rotate(-8deg) scale(1); opacity: 0.75; }
+    to { transform: translate3d(7%, 6%, 0) rotate(10deg) scale(1.08); opacity: 1; }
+  }
 
   @keyframes pomegranate-drift-left {
     from { translate: -12px 30px; rotate: -4deg; }
