@@ -25,6 +25,7 @@ function ComingSoon() {
 
       <section className="coming-soon-hero" aria-labelledby="coming-soon-title">
         <h1 id="coming-soon-title"><span>Coming</span><span>Soon</span></h1>
+        <a className="coming-soon-menu" href="https://www.reservly.at/speisekarte/en/daya" target="_blank" rel="noopener noreferrer">View the menu</a>
       </section>
 
       <footer className="coming-soon-footer">
