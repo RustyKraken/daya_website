@@ -1,6 +1,9 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { CarpetField, CarpetRunner, Medallion, MenuPomegranate, Paisley } from './persian.jsx';
+import { AnarRibbonSection } from './anar-ribbon.jsx';
+import { PLANT_URL } from './site.js';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -58,7 +61,19 @@ function DayaOrnament({ side }) {
   );
 }
 
-function DayaButton({ href, label, className = '', ...linkProps }) {
+// A sprouted pomegranate seed.
+function SproutIcon() {
+  return (
+    <svg className="sprout-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path className="sprout-stem" d="M12 14.5V8.2" />
+      <path className="sprout-leaf sprout-leaf-left" d="M12 10.4C9.6 10.6 7.9 9.4 7.4 7.1 9.8 6.8 11.5 8 12 10.4Z" />
+      <path className="sprout-leaf sprout-leaf-right" d="M12 9.1C12.6 6.8 14.4 5.7 16.8 6 16.2 8.3 14.4 9.4 12 9.1Z" />
+      <path className="sprout-seed" d="M12 13.2C14.3 13.2 15.6 15 15.6 17 15.6 19.2 13.9 20.8 12 20.8 10.1 20.8 8.4 19.2 8.4 17 8.4 15 9.7 13.2 12 13.2Z" />
+    </svg>
+  );
+}
+
+function DayaButton({ href, label, className = '', icon = null, ...linkProps }) {
   const renderCharacters = (layer) => {
     let visibleIndex = 0;
     return Array.from(label).map((character, index) => {
@@ -88,17 +103,17 @@ function DayaButton({ href, label, className = '', ...linkProps }) {
 
   return (
     <a className={`daya-button ${className}`.trim()} href={href} aria-label={label} {...linkProps}>
-      <DayaOrnament side="left" />
+      {icon ?? <DayaOrnament side="left" />}
       <span className="daya-button-label">
         <span className="daya-button-label-layer daya-button-label-current">{renderCharacters('current')}</span>
         <span className="daya-button-label-layer daya-button-label-hover">{renderCharacters('hover')}</span>
       </span>
-      <DayaOrnament side="right" />
+      {!icon && <DayaOrnament side="right" />}
     </a>
   );
 }
 
-function MenuOverlay({ open, onClose }) {
+function MenuOverlay({ open, onClose, home = '' }) {
   const closeRef = useRef(null);
 
   useEffect(() => {
@@ -145,8 +160,9 @@ function MenuOverlay({ open, onClose }) {
       aria-modal="true"
       aria-label="Main navigation"
     >
+      <MenuPomegranate />
       <div className="menu-header">
-        <a className="menu-signature" href="#home" onClick={() => onClose(false)} tabIndex={open ? 0 : -1} aria-label="DAYA home">
+        <a className="menu-signature" href={`${home}#home`} onClick={() => onClose(false)} tabIndex={open ? 0 : -1} aria-label="DAYA home">
           <img className="menu-brand-icon" src={asset('media/daya-icon.avif')} alt="" />
           <img className="menu-brand-wordmark" src={asset('media/daya-wordmark.avif')} alt="" />
         </a>
@@ -160,7 +176,7 @@ function MenuOverlay({ open, onClose }) {
         {primaryNavigation.map((item, index) => (
           <a
             key={item.label}
-            href={item.href}
+            href={`${home}${item.href}`}
             onClick={() => onClose(false)}
             tabIndex={open ? 0 : -1}
             style={{ '--menu-index': index }}
@@ -176,7 +192,7 @@ function MenuOverlay({ open, onClose }) {
   );
 }
 
-function SiteNav({ onMenuOpen, menuOpen, menuTriggerRef }) {
+function SiteNav({ onMenuOpen, menuOpen, menuTriggerRef, home = '' }) {
   const [theme, setTheme] = useState('light');
 
   useEffect(() => {
@@ -222,7 +238,7 @@ function SiteNav({ onMenuOpen, menuOpen, menuTriggerRef }) {
           <span />
         </span>
       </button>
-      <a className="hero-wordmark" href="#home" aria-label="DAYA home">
+      <a className="hero-wordmark" href={`${home}#home`} aria-label="DAYA home">
         <img src={asset('media/daya-wordmark.avif')} alt="" />
       </a>
       <span className="nav-location">Ibiza · 38°59′N</span>
@@ -285,6 +301,7 @@ function Hero() {
         </p>
         <div className="hero-actions">
           <DayaButton className="daya-button-hero" href={DIGITAL_MENU_URL} label="Explore the menu" target="_blank" rel="noopener noreferrer" />
+          <DayaButton className="daya-button-hero daya-button-seed" href={PLANT_URL} label="Plant your seed" icon={<SproutIcon />} />
         </div>
       </div>
     </section>
@@ -693,6 +710,7 @@ function AboutHistory() {
   return (
     <section className="about-section" id="about" ref={sectionRef} aria-labelledby="about-title" data-nav-theme="light">
       <div className="about-pattern" aria-hidden="true" />
+      <Medallion className="about-medallion" spin={100} />
       <div className="about-layout">
         <div className="about-visual">
           <div className="about-image-stack" ref={stackRef} aria-label="The craft and atmosphere of DAYA">
@@ -852,6 +870,10 @@ function StoryTimeline() {
   return (
     <section className="story-section" id="story" ref={sectionRef} aria-labelledby="story-title" data-nav-theme="dark">
       <div className="story-pattern" aria-hidden="true" />
+      <Medallion className="story-corner story-corner-top" spin={70} />
+      <Medallion className="story-corner story-corner-bottom" spin={-70} />
+      <Paisley className="story-paisley story-paisley-one" speed={1.2} />
+      <Paisley className="story-paisley story-paisley-two" speed={-0.8} />
       <header className="story-header">
         <p className="story-eyebrow">Our journey</p>
         <h2 id="story-title">
@@ -931,6 +953,7 @@ function JourneyMenuDiscovery() {
 
   return (
     <section className="journey-menu-section" id="menu" ref={sectionRef} aria-labelledby="journey-menu-title" data-nav-theme="light">
+      <CarpetField className="journey-field" />
       <div className="journey-menu-inner">
         <div className="journey-menu-content">
           <p className="journey-eyebrow">The DAYA menu</p>
@@ -1105,24 +1128,25 @@ function OurLocation() {
   );
 }
 
-function DayaFooter() {
+function DayaFooter({ home = '' }) {
   return (
     <footer className="site-footer" id="footer" data-nav-theme="light">
       <div className="footer-inner">
         <div className="footer-top">
           <nav className="footer-nav footer-nav-primary" aria-label="Footer navigation">
-            <a href="#home">Home</a>
-            <a href="#gallery">Gallery</a>
-            <a href="#about">About</a>
-            <a href="#menu">Menu</a>
+            <a href={`${home}#home`}>Home</a>
+            <a href={`${home}#gallery`}>Gallery</a>
+            <a href={`${home}#about`}>About</a>
+            <a href={`${home}#menu`}>Menu</a>
           </nav>
 
-          <a className="footer-brand" href="#home" aria-label="DAYA home">
+          <a className="footer-brand" href={`${home}#home`} aria-label="DAYA home">
             <img src={asset('media/daya-wordmark.avif')} alt="DAYA" />
           </a>
 
           <nav className="footer-nav footer-nav-secondary" aria-label="DAYA links">
-            <a href="#location">Location</a>
+            <a href={`${home}#location`}>Location</a>
+            <a href={PLANT_URL}>Plant your seed</a>
             <a href="https://www.instagram.com/dayaibiza/" target="_blank" rel="noopener noreferrer">Instagram</a>
             <a href="mailto:hello@dayaibiza.com">Contact</a>
           </nav>
@@ -1185,11 +1209,15 @@ export default function App() {
         </section>
         <AboutHistory />
         <StoryTimeline />
+        <AnarRibbonSection />
         <JourneyMenuDiscovery />
         <OurLocation />
         <SocialGallery />
+        <CarpetRunner fringe />
       </main>
       <DayaFooter />
     </>
   );
 }
+
+export { DayaButton, DayaFooter, MenuOverlay, SiteNav };

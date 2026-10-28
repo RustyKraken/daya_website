@@ -11,6 +11,7 @@ export default defineConfig({
         main: fileURLToPath(new URL('./index.html', import.meta.url)),
         comingSoon: fileURLToPath(new URL('./coming-soon/index.html', import.meta.url)),
         preview: fileURLToPath(new URL('./preview/index.html', import.meta.url)),
+        plantYourSeed: fileURLToPath(new URL('./plant-your-seed/index.html', import.meta.url)),
       },
     },
   },
