@@ -6,7 +6,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 const asset = (path) => `${import.meta.env.BASE_URL}${path.replace(/^\/+/, '')}`;
 const media = (name) => asset(`media/${name}.avif`);
-const DIGITAL_MENU_URL = '#menu'; // Replace with DAYA's external digital menu URL when available.
+const DIGITAL_MENU_URL = 'https://www.reservly.at/speisekarte/en/daya';
 
 const floatingImages = [
   { id: 1, image: 'room', className: 'float-one float-behind', alt: 'Dining room at DAYA with Persian tiles and warm light' },
@@ -284,7 +284,7 @@ function Hero() {
           <span>seasonal produce and generous hospitality.</span>
         </p>
         <div className="hero-actions">
-          <DayaButton className="daya-button-hero" href="#menu" label="Explore the menu" />
+          <DayaButton className="daya-button-hero" href={DIGITAL_MENU_URL} label="Explore the menu" target="_blank" rel="noopener noreferrer" />
         </div>
       </div>
     </section>
@@ -941,7 +941,7 @@ function JourneyMenuDiscovery() {
             Our menu moves between fire and freshness: saffron-led plates, bright herbs, citrus, charcoal, and generous dishes designed to travel around the table.
           </p>
           <div className="journey-actions">
-            <DayaButton href={DIGITAL_MENU_URL} label="View menu options" />
+            <DayaButton href={DIGITAL_MENU_URL} label="View menu options" target="_blank" rel="noopener noreferrer" />
           </div>
         </div>
 
