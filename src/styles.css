@@ -2817,14 +2817,6 @@ footer[id] {
   overflow: visible;
 }
 
-.about-medallion {
-  top: 50%;
-  left: 28%;
-  width: clamp(520px, 52vw, 860px);
-  translate: -50% -50%;
-  opacity: 0.07;
-}
-
 .story-corner {
   width: clamp(360px, 34vw, 560px);
   opacity: 0.12;
@@ -2934,7 +2926,6 @@ footer[id] {
 .journey-field .field-seed { fill: #1d6f72; }
 
 @media (max-width: 900px) {
-  .about-medallion { left: 50%; top: 32%; width: 120vw; }
 }
 
 @media (max-width: 680px) {
@@ -3080,28 +3071,11 @@ footer[id] {
   pointer-events: none;
 }
 
-.fa-hero {
-  margin-bottom: 14px;
-  color: var(--gold);
-  font-size: clamp(26px, 2.3vw, 36px);
-}
-
 .fa-story {
   margin-bottom: 14px;
   color: var(--red);
   font-size: clamp(30px, 2.8vw, 44px);
   opacity: 0.85;
-}
-
-.fa-about {
-  position: absolute;
-  top: clamp(40px, 6vw, 90px);
-  right: clamp(24px, 5vw, 80px);
-  z-index: -1;
-  color: var(--sand);
-  font-size: clamp(84px, 11vw, 176px);
-  line-height: 1.4;
-  opacity: 0.09;
 }
 
 .fa-menu {

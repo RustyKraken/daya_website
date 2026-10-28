@@ -274,7 +274,6 @@ function Hero() {
       <div className="hero-scrim" />
 
       <div className="hero-content">
-        <PersianWord className="fa-hero">خوش آمدید</PersianWord>
         <p className="hero-kicker">Persian dining · Ibiza</p>
         <h1 id="hero-title">
           <span className="hero-title-mask"><span className="hero-title-line">Persian soul.</span></span>
@@ -603,8 +602,6 @@ function AboutHistory() {
   return (
     <section className="about-section" id="about" ref={sectionRef} aria-labelledby="about-title" data-nav-theme="light">
       <div className="about-pattern" aria-hidden="true" />
-      <PersianWord className="fa-about">مهمان‌نوازی</PersianWord>
-      <Medallion className="about-medallion" spin={100} />
       <div className="about-layout">
         <div className="about-visual">
           <div className="about-image-stack" ref={stackRef} aria-label="The craft and atmosphere of DAYA">
