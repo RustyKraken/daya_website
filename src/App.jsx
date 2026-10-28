@@ -11,43 +11,33 @@ const asset = (path) => `${import.meta.env.BASE_URL}${path.replace(/^\/+/, '')}`
 const media = (name) => asset(`media/${name}.avif`);
 const DIGITAL_MENU_URL = 'https://www.reservly.at/speisekarte/en/daya';
 
-const floatingImages = [
-  { id: 1, image: 'room', className: 'float-one float-behind', alt: 'Dining room at DAYA with Persian tiles and warm light' },
-  { id: 2, image: 'bar', className: 'float-two float-front', alt: 'Counter dressed in Persian rugs beneath a painted pomegranate tree' },
-  { id: 3, image: 'brot', className: 'float-three float-front', alt: 'Golden Persian bread topped with sesame' },
-  { id: 4, image: 'saeule', className: 'float-four float-behind', alt: 'Turquoise and gold detail on a DAYA column' },
-  { id: 5, image: 'barrr', className: 'float-five float-behind', alt: 'Turquoise-tiled bar at DAYA' },
-];
-
 const journeyImages = [
-  { image: 'barrr', alt: 'Turquoise-tiled bar with brass stools at DAYA' },
-  { image: 'granat', alt: 'Fresh pomegranates in a wooden bowl at DAYA' },
-  { image: 'naanheart', alt: 'Freshly baked flatbread from the DAYA kitchen' },
+  { image: 'naanteig', alt: 'Bread dough resting in the DAYA kitchen' },
+  { image: 'room', alt: 'Dining room at DAYA with Persian tiles and warm light' },
   { image: 'dayagarden2', alt: 'DAYA terrace with green parasols and palm trees' },
+  { image: 'entrance', alt: 'Turquoise doors, lantern and plants at the DAYA entrance' },
 ];
 
 const socialImages = [
-  { image: 'room', alt: 'DAYA dining room' },
-  { image: 'brot', alt: 'Persian bread with sesame' },
-  { image: 'barrr', alt: 'The DAYA bar' },
-  { image: 'saeule', alt: 'Turquoise and gold column detail' },
-  { image: 'naanteig', alt: 'Bread dough resting in the DAYA kitchen' },
+  { image: 'night_logo', alt: 'The DAYA pomegranate emblem lit on a wall at night' },
+  { image: 'nightlivvving', alt: 'Candlelit lounge corner at DAYA in the evening' },
   { image: 'granatapfel', alt: 'Pomegranate tree beside a turquoise door at DAYA' },
+  { image: 'eingnag', alt: 'Warmly lit entrance and bar at DAYA' },
 ];
 
 const experienceSlides = [
-  { title: 'The Restaurant', image: 'room', alt: 'Dining room at DAYA with Persian tiles and warm light' },
+  { title: 'The Restaurant', image: 'night_inside', alt: 'Round table dressed in Persian textiles inside DAYA at night' },
   { title: 'The Bar', image: 'barrr', alt: 'Turquoise-tiled bar with brass stools at DAYA' },
-  { title: 'The Terrace', image: 'dayagarden2', alt: 'DAYA terrace with green parasols and palm trees' },
+  { title: 'The Terrace', image: 'night_gardentable', alt: 'Candlelit table on the DAYA terrace at night' },
   { title: 'The Kitchen', image: 'naanheart', alt: 'Flatbread freshly baked in the DAYA kitchen' },
-  { title: 'The Evening', image: 'eingnag', alt: 'Warmly lit entrance and bar at DAYA' },
+  { title: 'The Evening', image: 'nightwohnzimmerlight', alt: 'The DAYA lounge glowing in the evening' },
 ];
 
 const primaryNavigation = [
   { label: 'Home', href: '#home' },
   { label: 'Gallery', href: '#gallery' },
-  { label: 'About', href: '#about' },
   { label: 'Story', href: '#story' },
+  { label: 'About', href: '#about' },
   { label: 'Menu', href: '#menu' },
   { label: 'Location', href: '#location' },
 ];
@@ -71,6 +61,11 @@ function SproutIcon() {
       <path className="sprout-seed" d="M12 13.2C14.3 13.2 15.6 15 15.6 17 15.6 19.2 13.9 20.8 12 20.8 10.1 20.8 8.4 19.2 8.4 17 8.4 15 9.7 13.2 12 13.2Z" />
     </svg>
   );
+}
+
+// Decorative Persian word, set in Nastaliq. Purely ornamental, so hidden from screen readers.
+function PersianWord({ children, className = '' }) {
+  return <span className={`fa-script ${className}`.trim()} lang="fa" dir="rtl" aria-hidden="true">{children}</span>;
 }
 
 function DayaButton({ href, label, className = '', icon = null, ...linkProps }) {
@@ -275,21 +270,11 @@ function Hero() {
 
   return (
     <section ref={heroRef} className="hero" id="home" aria-labelledby="hero-title" data-nav-theme="light">
-      <video
-        className="hero-video"
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="metadata"
-        poster={media('dayagarden2')}
-        aria-hidden="true"
-      >
-        <source src={asset('media/daya-hero.mp4')} type="video/mp4" />
-      </video>
+      <img className="hero-video" src={media('nightterreza')} alt="" fetchPriority="high" aria-hidden="true" />
       <div className="hero-scrim" />
 
       <div className="hero-content">
+        <PersianWord className="fa-hero">خوش آمدید</PersianWord>
         <p className="hero-kicker">Persian dining · Ibiza</p>
         <h1 id="hero-title">
           <span className="hero-title-mask"><span className="hero-title-line">Persian soul.</span></span>
@@ -305,98 +290,6 @@ function Hero() {
         </div>
       </div>
     </section>
-  );
-}
-
-function GalleryIntro() {
-  const introRef = useRef(null);
-
-  useLayoutEffect(() => {
-    const ctx = gsap.context(() => {
-      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (reduceMotion) return;
-
-      const mm = gsap.matchMedia();
-      mm.add(
-        {
-          desktop: '(min-width: 768px)',
-          mobile: '(max-width: 767px)',
-        },
-        ({ conditions }) => {
-          const splitDistance = conditions.desktop ? 55 : 43;
-          const titleFadeStart = conditions.desktop ? 8.45 : 8.08;
-          const floats = gsap.utils.toArray('.floating-image');
-          const timeline = gsap.timeline({
-            scrollTrigger: {
-              trigger: introRef.current,
-              start: 'top top',
-              end: 'bottom bottom',
-              scrub: 0.8,
-              invalidateOnRefresh: true,
-            },
-          });
-
-          timeline
-            .fromTo('.gallery-title', { opacity: 0.2 }, { opacity: 1, duration: 1.15, ease: 'power2.out' }, 0);
-
-          floats.forEach((image, index) => {
-            const start = 0.85 + index * 1.18;
-            const distance = conditions.desktop ? window.innerHeight * (1.25 + (index % 3) * 0.12) : window.innerHeight * 1.08;
-            const duration = 2.45 + (index % 2) * 0.28;
-            timeline.set(image, { autoAlpha: 0 }, 0);
-            timeline.set(image, { autoAlpha: 1 }, start);
-            timeline.fromTo(
-              image,
-              { y: () => window.innerHeight * 0.68, scale: 1 },
-              { y: () => -distance, scale: 1, duration, ease: 'none', immediateRender: false },
-              start,
-            );
-            timeline.set(image, { autoAlpha: 0 }, start + duration);
-          });
-
-          timeline
-            .set(floats, { autoAlpha: 0 }, 7.85)
-            .fromTo('.experience-section-embedded', {
-              autoAlpha: 0,
-              scale: 0.985,
-            }, {
-              autoAlpha: 1,
-              scale: 1,
-              duration: 1.25,
-              ease: 'power2.inOut',
-            }, 7.85)
-            .to('.title-gal', { x: `-${splitDistance}vw`, scale: 1.045, duration: 1.25, ease: 'power2.inOut' }, 7.85)
-            .to('.title-lery', { x: `${splitDistance}vw`, scale: 1.045, duration: 1.25, ease: 'power2.inOut' }, 7.85)
-            .to('.gallery-title', { autoAlpha: 0, duration: conditions.desktop ? 0.65 : 0.5, ease: 'power2.out' }, titleFadeStart)
-            .to('.experience-section-embedded', { duration: 1.35 }, 9.1);
-
-          return () => timeline.kill();
-        },
-      );
-
-      return () => mm.revert();
-    }, introRef);
-
-    return () => ctx.revert();
-  }, []);
-
-  return (
-    <div ref={introRef} className="gallery-intro" id="gallery" data-nav-theme="light">
-      <div className="gallery-sticky">
-        <ExperienceSlider embedded />
-
-        <h2 className="gallery-title" aria-label="Gallery">
-          <span className="title-gal">Gal</span><span className="title-lery">lery</span>
-        </h2>
-
-        {floatingImages.map((item) => (
-          <figure className={`floating-image ${item.className}`} key={item.id}>
-            <img src={media(item.image)} alt={item.alt} loading="lazy" />
-            <figcaption>0{item.id}</figcaption>
-          </figure>
-        ))}
-      </div>
-    </div>
   );
 }
 
@@ -710,6 +603,7 @@ function AboutHistory() {
   return (
     <section className="about-section" id="about" ref={sectionRef} aria-labelledby="about-title" data-nav-theme="light">
       <div className="about-pattern" aria-hidden="true" />
+      <PersianWord className="fa-about">مهمان‌نوازی</PersianWord>
       <Medallion className="about-medallion" spin={100} />
       <div className="about-layout">
         <div className="about-visual">
@@ -750,8 +644,8 @@ const storyEntries = [
     label: '01 · The roots',
     title: 'Hospitality comes first.',
     body: 'DAYA starts with a simple Persian principle: a guest should feel cared for. That generosity shapes the welcome, the pace of service, and every dish placed at the centre of the table.',
-    image: 'entrance',
-    alt: 'Turquoise doors, lantern and plants at the DAYA entrance',
+    image: 'night_entraze',
+    alt: 'An open studded door leading into DAYA at night',
     side: 'left',
     rotation: -4,
   },
@@ -777,8 +671,8 @@ const storyEntries = [
     label: '04 · Today',
     title: 'One table, many stories.',
     body: 'DAYA today is a place for shared plates, unhurried conversation, and nights that move naturally from terrace to table. Food, design, music, and hospitality become one continuous experience.',
-    image: 'naanheart',
-    alt: 'Flatbread to share from the DAYA kitchen',
+    image: 'livingggroom',
+    alt: 'Guests gathering in the warmly lit DAYA lounge',
     side: 'right',
     rotation: 3.5,
   },
@@ -875,6 +769,7 @@ function StoryTimeline() {
       <Paisley className="story-paisley story-paisley-one" speed={1.2} />
       <Paisley className="story-paisley story-paisley-two" speed={-0.8} />
       <header className="story-header">
+        <PersianWord className="fa-story">داستان ما</PersianWord>
         <p className="story-eyebrow">Our journey</p>
         <h2 id="story-title">
           <span className="story-heading-mask"><span className="story-heading-line">The story of DAYA.</span></span>
@@ -956,6 +851,7 @@ function JourneyMenuDiscovery() {
       <CarpetField className="journey-field" />
       <div className="journey-menu-inner">
         <div className="journey-menu-content">
+          <PersianWord className="fa-menu">سفره</PersianWord>
           <p className="journey-eyebrow">The DAYA menu</p>
           <h2 id="journey-menu-title">
             <span className="journey-heading-mask"><span className="journey-heading-line">Made to share.</span></span>
@@ -1204,11 +1100,11 @@ export default function App() {
       />
       <main id="main-content" tabIndex="-1">
         <Hero />
-        <section className="gallery-section">
-          <GalleryIntro />
-        </section>
-        <AboutHistory />
+        <div id="gallery">
+          <ExperienceSlider />
+        </div>
         <StoryTimeline />
+        <AboutHistory />
         <AnarRibbonSection />
         <JourneyMenuDiscovery />
         <OurLocation />
