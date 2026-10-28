@@ -5,39 +5,39 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 const asset = (path) => `${import.meta.env.BASE_URL}${path.replace(/^\/+/, '')}`;
-const media = (index) => asset(`media/daya-${String(index).padStart(2, '0')}.avif`);
+const media = (name) => asset(`media/${name}.avif`);
 const DIGITAL_MENU_URL = '#menu'; // Replace with DAYA's external digital menu URL when available.
 
 const floatingImages = [
-  { id: 1, image: 2, className: 'float-one float-behind', alt: 'Warmly lit dining room at DAYA' },
-  { id: 2, image: 4, className: 'float-two float-front', alt: 'Persian textile alcove illuminated by candlelight' },
-  { id: 3, image: 3, className: 'float-three float-front', alt: 'Saffron grilled prawns with herbs' },
-  { id: 4, image: 7, className: 'float-four float-behind', alt: 'Turquoise Persian tile and aged brass detail' },
-  { id: 5, image: 5, className: 'float-five float-behind', alt: 'Pomegranate cocktail in cut crystal' },
+  { id: 1, image: 'room', className: 'float-one float-behind', alt: 'Dining room at DAYA with Persian tiles and warm light' },
+  { id: 2, image: 'bar', className: 'float-two float-front', alt: 'Counter dressed in Persian rugs beneath a painted pomegranate tree' },
+  { id: 3, image: 'brot', className: 'float-three float-front', alt: 'Golden Persian bread topped with sesame' },
+  { id: 4, image: 'saeule', className: 'float-four float-behind', alt: 'Turquoise and gold detail on a DAYA column' },
+  { id: 5, image: 'barrr', className: 'float-five float-behind', alt: 'Turquoise-tiled bar at DAYA' },
 ];
 
 const journeyImages = [
-  { image: 5, alt: 'Pomegranate cocktail served in cut crystal at DAYA' },
-  { image: 8, alt: 'Guests sharing an intimate evening at DAYA' },
-  { image: 6, alt: 'Persian sharing dishes arranged across a DAYA table' },
-  { image: 1, alt: 'DAYA terrace and courtyard at blue hour' },
+  { image: 'barrr', alt: 'Turquoise-tiled bar with brass stools at DAYA' },
+  { image: 'granat', alt: 'Fresh pomegranates in a wooden bowl at DAYA' },
+  { image: 'naanheart', alt: 'Freshly baked flatbread from the DAYA kitchen' },
+  { image: 'dayagarden2', alt: 'DAYA terrace with green parasols and palm trees' },
 ];
 
 const socialImages = [
-  { image: 2, alt: 'Warmly lit DAYA dining room' },
-  { image: 3, alt: 'Chargrilled prawns with pistachio and herbs' },
-  { image: 5, alt: 'Pomegranate cocktail at the DAYA bar' },
-  { image: 7, alt: 'Persian turquoise tile and brass detail' },
-  { image: 8, alt: 'Guests sharing dinner at DAYA' },
-  { image: 9, alt: 'DAYA courtyard with an illuminated olive tree' },
+  { image: 'room', alt: 'DAYA dining room' },
+  { image: 'brot', alt: 'Persian bread with sesame' },
+  { image: 'barrr', alt: 'The DAYA bar' },
+  { image: 'saeule', alt: 'Turquoise and gold column detail' },
+  { image: 'naanteig', alt: 'Bread dough resting in the DAYA kitchen' },
+  { image: 'granatapfel', alt: 'Pomegranate tree beside a turquoise door at DAYA' },
 ];
 
 const experienceSlides = [
-  { title: 'The Restaurant', image: 2, alt: 'Warm candlelit dining room at DAYA' },
-  { title: 'The Bar', image: 5, alt: 'Pomegranate cocktail served in cut crystal at the DAYA bar' },
-  { title: 'The Terrace', image: 1, alt: 'DAYA terrace and turquoise courtyard pool at blue hour' },
-  { title: 'The Kitchen', image: 6, alt: 'Modern Persian sharing plates prepared by the DAYA kitchen' },
-  { title: 'The Evening', image: 8, alt: 'Guests sharing an intimate evening dinner at DAYA' },
+  { title: 'The Restaurant', image: 'room', alt: 'Dining room at DAYA with Persian tiles and warm light' },
+  { title: 'The Bar', image: 'barrr', alt: 'Turquoise-tiled bar with brass stools at DAYA' },
+  { title: 'The Terrace', image: 'dayagarden2', alt: 'DAYA terrace with green parasols and palm trees' },
+  { title: 'The Kitchen', image: 'naanheart', alt: 'Flatbread freshly baked in the DAYA kitchen' },
+  { title: 'The Evening', image: 'eingnag', alt: 'Warmly lit entrance and bar at DAYA' },
 ];
 
 const primaryNavigation = [
@@ -266,7 +266,7 @@ function Hero() {
         loop
         playsInline
         preload="metadata"
-        poster={media(1)}
+        poster={media('dayagarden2')}
         aria-hidden="true"
       >
         <source src={asset('media/daya-hero.mp4')} type="video/mp4" />
@@ -626,9 +626,9 @@ function ExperienceSlider({ embedded = false }) {
 }
 
 const aboutImages = [
-  { image: 3, className: 'about-card-one', alt: 'Chargrilled prawns finished with pistachio and herbs at DAYA' },
-  { image: 4, className: 'about-card-two', alt: 'Candlelit Persian textile alcove inside DAYA' },
-  { image: 7, className: 'about-card-three', alt: 'Turquoise Persian tilework and aged brass detail at DAYA' },
+  { image: 'brot', className: 'about-card-one', alt: 'Golden Persian bread topped with sesame at DAYA' },
+  { image: 'bar', className: 'about-card-two', alt: 'Persian rugs and a painted pomegranate tree inside DAYA' },
+  { image: 'saeule', className: 'about-card-three', alt: 'Turquoise and gold column detail at DAYA' },
 ];
 
 function AboutHistory() {
@@ -732,8 +732,8 @@ const storyEntries = [
     label: '01 · The roots',
     title: 'Hospitality comes first.',
     body: 'DAYA starts with a simple Persian principle: a guest should feel cared for. That generosity shapes the welcome, the pace of service, and every dish placed at the centre of the table.',
-    image: 7,
-    alt: 'Persian turquoise tile and aged brass detail at DAYA',
+    image: 'entrance',
+    alt: 'Turquoise doors, lantern and plants at the DAYA entrance',
     side: 'left',
     rotation: -4,
   },
@@ -741,8 +741,8 @@ const storyEntries = [
     label: '02 · The craft',
     title: 'Memory becomes flavour.',
     body: 'Saffron, herbs, smoke, citrus, and pomegranate connect the menu to Persian memory. The kitchen refines those familiar flavours with seasonal produce and a clear, contemporary hand.',
-    image: 3,
-    alt: 'Chargrilled prawns with pistachio and herbs from the DAYA kitchen',
+    image: 'granat',
+    alt: 'Fresh pomegranates in a wooden bowl at DAYA',
     side: 'right',
     rotation: 3,
   },
@@ -750,8 +750,8 @@ const storyEntries = [
     label: '03 · The island',
     title: 'The island changes the rhythm.',
     body: 'Ibiza brings openness to the experience—long evenings, sea air, natural materials, and a slower sense of time. Persian warmth and island ease meet without either losing its character.',
-    image: 9,
-    alt: 'Sculptural DAYA courtyard with an illuminated olive tree',
+    image: 'dayagarden',
+    alt: 'DAYA terrace in the Ibiza sunshine',
     side: 'left',
     rotation: -2.5,
   },
@@ -759,8 +759,8 @@ const storyEntries = [
     label: '04 · Today',
     title: 'One table, many stories.',
     body: 'DAYA today is a place for shared plates, unhurried conversation, and nights that move naturally from terrace to table. Food, design, music, and hospitality become one continuous experience.',
-    image: 8,
-    alt: 'Guests sharing dinner together at DAYA in Ibiza',
+    image: 'naanheart',
+    alt: 'Flatbread to share from the DAYA kitchen',
     side: 'right',
     rotation: 3.5,
   },
