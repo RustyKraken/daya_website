@@ -46,10 +46,10 @@
 .seed-eyebrow {
   margin: 0 0 22px;
   color: var(--gold);
-  font-size: 11px;
+  font-size: var(--fs-label);
   font-weight: 600;
   line-height: 1;
-  letter-spacing: 0.2em;
+  letter-spacing: var(--ls-label);
   text-transform: uppercase;
 }
 
@@ -58,8 +58,8 @@
   font-family: var(--display);
   font-size: clamp(46px, 4.7vw, 78px);
   font-weight: 400;
-  line-height: 0.95;
-  letter-spacing: -0.03em;
+  line-height: var(--lh-display);
+  letter-spacing: var(--ls-display);
   text-wrap: balance;
 }
 
@@ -67,8 +67,8 @@
   max-width: 430px;
   margin: 0;
   color: rgba(245, 239, 229, 0.86);
-  font-size: 16px;
-  line-height: 1.75;
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
 }
 
 .seed-art {
@@ -248,7 +248,7 @@
   display: grid;
   grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
   gap: clamp(56px, 7vw, 120px);
-  padding: clamp(110px, 10vw, 160px) clamp(30px, 4.2vw, 64px);
+  padding: var(--section-y) var(--section-x);
   color: var(--brown);
   background: #efe3cc;
 }
@@ -265,16 +265,16 @@
 .seed-home h2 {
   margin: 0 0 30px;
   font-family: var(--display);
-  font-size: clamp(48px, 5vw, 82px);
+  font-size: var(--fs-h2);
   font-weight: 400;
-  line-height: 0.95;
-  letter-spacing: -0.03em;
+  line-height: var(--lh-display);
+  letter-spacing: var(--ls-display);
 }
 
 .seed-home-intro p:not(.seed-eyebrow) {
   margin: 0 0 18px;
-  font-size: 16px;
-  line-height: 1.75;
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
 }
 
 .seed-guide h3 {
@@ -282,7 +282,7 @@
   padding-bottom: 22px;
   border-bottom: 1px solid rgba(59, 42, 33, 0.2);
   font-family: var(--display);
-  font-size: clamp(32px, 2.8vw, 44px);
+  font-size: var(--fs-h3);
   font-weight: 400;
   letter-spacing: -0.02em;
 }
@@ -325,7 +325,7 @@
 .seed-guide h4 {
   margin: 0 0 8px;
   font-family: var(--display);
-  font-size: 25px;
+  font-size: var(--fs-h4);
   font-weight: 400;
 }
 
@@ -435,7 +435,7 @@
   .seed-copy { align-self: start; padding: 0; }
   .seed-eyebrow { margin-bottom: 12px; }
   .seed-title { font-size: clamp(30px, 8.4vw, 50px); margin-bottom: 10px; }
-  .seed-body { font-size: 14px; line-height: 1.6; }
+  .seed-body { font-size: var(--fs-body); line-height: var(--lh-body); }
   .seed-art { height: auto; min-height: 0; margin: 4px -24px 0; }
   .seed-experience.is-done,
   .seed-experience.is-resetting { height: auto; grid-template-rows: auto auto auto; }
@@ -450,7 +450,7 @@
   .seed-experience.is-resetting { grid-template-areas: 'steps' 'art' 'copy'; }
   .seed-final { margin-top: 24px; }
 
-  .seed-home { grid-template-columns: minmax(0, 1fr); padding: 96px 24px; }
+  .seed-home { grid-template-columns: minmax(0, 1fr); padding: var(--section-y) var(--section-x); }
   .seed-home-intro { position: static; }
 }
 
