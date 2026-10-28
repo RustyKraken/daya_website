@@ -12,18 +12,18 @@ const media = (name) => asset(`media/${name}.avif`);
 const DIGITAL_MENU_URL = 'https://www.reservly.at/speisekarte/en/daya';
 
 // Hero slideshow. Each photo is used only here, so nothing repeats on the page.
-const heroImages = ['nightterreza', 'nightwohnzimmerlight', 'night_logo'];
+// Alternates evening and daytime.
+const heroImages = ['nightterreza', 'dayagarden', 'nightwohnzimmerlight', 'dayagarden2'];
 
 const journeyImages = [
   { image: 'naanteig', alt: 'Bread dough resting in the DAYA kitchen' },
   { image: 'room', alt: 'Dining room at DAYA with Persian tiles and warm light' },
-  { image: 'dayagarden2', alt: 'DAYA terrace with green parasols and palm trees' },
   { image: 'entrance', alt: 'Turquoise doors, lantern and plants at the DAYA entrance' },
 ];
 
 const socialImages = [
+  { image: 'night_logo', alt: 'The DAYA pomegranate emblem lit on a wall at night' },
   { image: 'nightlivvving', alt: 'Candlelit lounge corner at DAYA in the evening' },
-  { image: 'granatapfel', alt: 'Pomegranate tree beside a turquoise door at DAYA' },
   { image: 'eingnag', alt: 'Warmly lit entrance and bar at DAYA' },
 ];
 
@@ -692,8 +692,8 @@ const storyEntries = [
     label: '03 · The island',
     title: 'The island changes the rhythm.',
     body: 'Ibiza brings openness to the experience—long evenings, sea air, natural materials, and a slower sense of time. Persian warmth and island ease meet without either losing its character.',
-    image: 'dayagarden',
-    alt: 'DAYA terrace in the Ibiza sunshine',
+    image: 'granatapfel',
+    alt: 'A pomegranate tree in the Ibiza sun beside a turquoise door at DAYA',
     side: 'left',
     rotation: -2.5,
   },
