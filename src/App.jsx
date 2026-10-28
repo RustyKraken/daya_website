@@ -11,6 +11,9 @@ const asset = (path) => `${import.meta.env.BASE_URL}${path.replace(/^\/+/, '')}`
 const media = (name) => asset(`media/${name}.avif`);
 const DIGITAL_MENU_URL = 'https://www.reservly.at/speisekarte/en/daya';
 
+// Hero slideshow. Each photo is used only here, so nothing repeats on the page.
+const heroImages = ['nightterreza', 'nightwohnzimmerlight', 'night_logo'];
+
 const journeyImages = [
   { image: 'naanteig', alt: 'Bread dough resting in the DAYA kitchen' },
   { image: 'room', alt: 'Dining room at DAYA with Persian tiles and warm light' },
@@ -19,7 +22,6 @@ const journeyImages = [
 ];
 
 const socialImages = [
-  { image: 'night_logo', alt: 'The DAYA pomegranate emblem lit on a wall at night' },
   { image: 'nightlivvving', alt: 'Candlelit lounge corner at DAYA in the evening' },
   { image: 'granatapfel', alt: 'Pomegranate tree beside a turquoise door at DAYA' },
   { image: 'eingnag', alt: 'Warmly lit entrance and bar at DAYA' },
@@ -30,7 +32,6 @@ const experienceSlides = [
   { title: 'The Bar', image: 'barrr', alt: 'Turquoise-tiled bar with brass stools at DAYA' },
   { title: 'The Terrace', image: 'night_gardentable', alt: 'Candlelit table on the DAYA terrace at night' },
   { title: 'The Kitchen', image: 'naanheart', alt: 'Flatbread freshly baked in the DAYA kitchen' },
-  { title: 'The Evening', image: 'nightwohnzimmerlight', alt: 'The DAYA lounge glowing in the evening' },
 ];
 
 const primaryNavigation = [
@@ -253,7 +254,25 @@ function Hero() {
         .from('.hero-subtext', { y: 22, opacity: 0, duration: 0.9 }, 0.78)
         .from('.hero-actions', { y: 18, opacity: 0, duration: 0.8 }, 0.95);
 
-      gsap.to('.hero-video', {
+      // Slideshow: each photo holds for a while, then cross-fades into the next with a slow zoom.
+      const slides = gsap.utils.toArray('.hero-slide');
+      let current = 0;
+      gsap.set(slides, { autoAlpha: 0 });
+      gsap.set(slides[0], { autoAlpha: 1 });
+      gsap.fromTo(slides[0], { scale: 1 }, { scale: 1.06, duration: 10, ease: 'none' });
+      const advance = () => {
+        const previous = slides[current];
+        current = (current + 1) % slides.length;
+        const next = slides[current];
+        gsap.set(next, { zIndex: 2 });
+        gsap.set(previous, { zIndex: 1 });
+        gsap.fromTo(next, { autoAlpha: 0, scale: 1 }, { autoAlpha: 1, duration: 1.8, ease: 'power2.inOut' });
+        gsap.to(next, { scale: 1.06, duration: 10, ease: 'none' });
+        gsap.to(previous, { autoAlpha: 0, duration: 1.8, delay: 0.4, ease: 'power1.inOut' });
+      };
+      const interval = window.setInterval(advance, 9000);
+
+      gsap.to('.hero-media', {
         scale: 1.08,
         ease: 'none',
         scrollTrigger: {
@@ -263,6 +282,8 @@ function Hero() {
           scrub: 1.2,
         },
       });
+
+      return () => window.clearInterval(interval);
     }, heroRef);
 
     return () => ctx.revert();
@@ -270,7 +291,18 @@ function Hero() {
 
   return (
     <section ref={heroRef} className="hero" id="home" aria-labelledby="hero-title" data-nav-theme="light">
-      <img className="hero-video" src={media('nightterreza')} alt="" fetchPriority="high" aria-hidden="true" />
+      <div className="hero-media" aria-hidden="true">
+        {heroImages.map((name, index) => (
+          <img
+            className="hero-video hero-slide"
+            src={media(name)}
+            alt=""
+            key={name}
+            fetchPriority={index === 0 ? 'high' : 'low'}
+            decoding="async"
+          />
+        ))}
+      </div>
       <div className="hero-scrim" />
 
       <div className="hero-content">
@@ -602,6 +634,7 @@ function AboutHistory() {
   return (
     <section className="about-section" id="about" ref={sectionRef} aria-labelledby="about-title" data-nav-theme="light">
       <div className="about-pattern" aria-hidden="true" />
+      <PersianWord className="fa-about">مهمان‌نوازی</PersianWord>
       <div className="about-layout">
         <div className="about-visual">
           <div className="about-image-stack" ref={stackRef} aria-label="The craft and atmosphere of DAYA">

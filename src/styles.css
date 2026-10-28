@@ -157,6 +157,18 @@ footer[id] {
   isolation: isolate;
 }
 
+.hero-media {
+  position: absolute;
+  inset: 0;
+  z-index: -3;
+  overflow: hidden;
+  will-change: transform;
+}
+
+.hero-slide + .hero-slide {
+  opacity: 0;
+}
+
 .hero-video {
   position: absolute;
   inset: -3%;
@@ -2798,7 +2810,8 @@ footer[id] {
     transition-duration: 0.01ms !important;
   }
 
-  .hero-video {
+  .hero-video,
+  .hero-media {
     transform: none !important;
   }
 
@@ -3136,4 +3149,20 @@ footer[id] {
   margin-bottom: 14px;
   color: var(--gold);
   font-size: clamp(30px, 2.6vw, 42px);
+}
+
+.fa-about {
+  position: absolute;
+  right: clamp(24px, 4vw, 72px);
+  bottom: clamp(16px, 2vw, 36px);
+  z-index: -1;
+  color: var(--sand);
+  font-size: clamp(120px, 17vw, 280px);
+  line-height: 1.5;
+  white-space: nowrap;
+  opacity: 0.08;
+}
+
+@media (max-width: 680px) {
+  .fa-about { right: 16px; bottom: 12px; font-size: 92px; }
 }
