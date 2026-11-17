@@ -1251,19 +1251,6 @@ footer[id] {
   isolation: isolate;
 }
 
-.story-pattern {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  opacity: 0.24;
-  background-image:
-    linear-gradient(45deg, transparent 49.7%, rgba(220, 200, 163, 0.16) 49.85%, rgba(220, 200, 163, 0.16) 50.15%, transparent 50.3%),
-    linear-gradient(-45deg, transparent 49.7%, rgba(212, 175, 55, 0.07) 49.85%, rgba(212, 175, 55, 0.07) 50.15%, transparent 50.3%);
-  background-size: 96px 96px;
-  pointer-events: none;
-  -webkit-mask-image: linear-gradient(to bottom, rgba(59, 42, 33, 0.68), transparent 88%);
-  mask-image: linear-gradient(to bottom, rgba(59, 42, 33, 0.68), transparent 88%);
-}
 
 .story-header {
   max-width: 1400px;
@@ -2433,10 +2420,6 @@ footer[id] {
     padding: var(--section-y) var(--section-x);
   }
 
-  .story-pattern {
-    background-size: 68px 68px;
-  }
-
   .story-header {
     text-align: left;
   }
@@ -2879,13 +2862,6 @@ footer[id] {
   overflow: visible;
 }
 
-.story-corner {
-  width: clamp(360px, 34vw, 560px);
-  opacity: 0.12;
-}
-
-.story-corner-top { top: 0; left: 0; translate: -50% -50%; }
-.story-corner-bottom { right: 0; bottom: 0; translate: 50% 50%; }
 
 .paisley {
   position: absolute;
@@ -2904,9 +2880,6 @@ footer[id] {
   animation: paisley-sway 5.5s ease-in-out infinite alternate;
 }
 
-.story-paisley-one { top: 26%; left: 3.5%; }
-.story-paisley-two { top: 52%; right: 4%; width: clamp(48px, 4vw, 70px); }
-.story-paisley-two svg { animation-delay: -2s; }
 
 @keyframes paisley-sway {
   from { transform: rotate(-6deg); }
@@ -2968,17 +2941,16 @@ footer[id] {
 .journey-menu-section {
   z-index: 3;
   isolation: isolate;
-  box-shadow: 0 -18px 40px rgba(2, 28, 31, 0.35);
   padding: var(--section-y) var(--section-x);
 }
 
-/* Calm turquoise carpet: fades out at the bottom so it melts into the location section */
+/* Calm carpet field: fades in at the top and out at the bottom so it melts into the neighbouring sections */
 .journey-field {
   inset: 0;
   height: 100%;
   opacity: 0.5;
-  -webkit-mask-image: linear-gradient(to bottom, #000 60%, transparent);
-  mask-image: linear-gradient(to bottom, #000 60%, transparent);
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 32%, #000 60%, transparent);
+  mask-image: linear-gradient(to bottom, transparent, #000 32%, #000 60%, transparent);
 }
 
 .journey-field .field-cell { fill: #0b5359; }
@@ -2994,47 +2966,58 @@ footer[id] {
 @media (max-width: 680px) {
   .carpet-runner { height: 104px; }
   .carpet-runner-svg { transform: scale(0.7); transform-origin: left top; width: 143%; }
-  .story-corner { width: 300px; }
   .paisley { width: 46px; opacity: 0.4; }
-  .story-paisley-one { left: auto; right: 4%; top: 12%; }
 }
 
-/* Pomegranate wrapped in an ikat peel that unrolls with the scroll */
-.anar-ribbon-section {
+/* Pomegranate branch: grows in from the edge, then sways gently */
+.anar-branch-section {
   position: relative;
   overflow: hidden;
-  padding: var(--section-y) var(--section-x) 0;
-  color: var(--cream);
-  background:
-    radial-gradient(ellipse at 70% 12%, rgba(63, 178, 173, 0.28), transparent 55%),
-    radial-gradient(ellipse at 20% 70%, rgba(35, 135, 145, 0.22), transparent 55%),
-    var(--turquoise);
-  isolation: isolate;
+  padding: clamp(48px, 5vw, 80px) var(--section-x) var(--section-y);
+  color: var(--turquoise-dark);
+  background: var(--cream);
 }
 
-.anar-row {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  align-items: center;
-  gap: clamp(40px, 6vw, 96px);
+.anar-branch-wrap {
   max-width: 1400px;
-  min-height: 82vh;
-  margin: 0 auto;
+  margin: 0 auto clamp(40px, 5vw, 72px);
 }
 
-.anar-row-1 { min-height: 0; padding-bottom: 18vh; }
-.anar-row-2 .anar-chapter { grid-column: 2; }
-.anar-row-end { min-height: 16vh; }
+.anar-branch {
+  display: block;
+  width: calc(100% + var(--section-x));
+  height: auto;
+  overflow: visible;
+}
 
-.anar-chapter {
-  position: relative;
-  z-index: 3;
-  max-width: 470px;
+.branch-sway,
+.branch-leaf,
+.branch-fruit {
+  transform-box: fill-box;
+  animation: branch-sway 9s ease-in-out infinite alternate;
+}
+
+.branch-sway { transform-origin: 100% 20%; --sway: 0.7deg; }
+.branch-leaf { transform-origin: 0% 50%; --sway: 5deg; animation-duration: 3.4s; }
+.branch-fruit { transform-origin: 50% 0%; --sway: 3.5deg; }
+
+@keyframes branch-sway {
+  from { transform: rotate(calc(var(--sway) * -1)); }
+  to { transform: rotate(var(--sway)); }
+}
+
+.anar-chapters {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr) minmax(0, 1fr);
+  align-items: end;
+  gap: clamp(40px, 5vw, 88px);
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
 .anar-eyebrow {
   margin: 0 0 var(--space-label);
-  color: var(--gold);
+  color: var(--turquoise);
   font-size: var(--fs-label);
   font-weight: 600;
   line-height: 1;
@@ -3042,62 +3025,45 @@ footer[id] {
   text-transform: uppercase;
 }
 
-.anar-eyebrow::first-line { letter-spacing: 0.2em; }
-
 .anar-chapter h2,
 .anar-chapter h3 {
   margin: 0 0 var(--space-heading);
+  color: var(--turquoise);
   font-family: var(--display);
   font-weight: 400;
-  line-height: 0.95;
-  letter-spacing: -0.03em;
-  font-size: var(--fs-h3);
 }
 
-.anar-chapter h2 { font-size: var(--fs-h2);
+.anar-chapter h2 {
+  font-size: var(--fs-h2);
   line-height: var(--lh-display);
   letter-spacing: var(--ls-display);
 }
-.anar-chapter h3 { font-size: var(--fs-h3); line-height: var(--lh-heading); }
+
+.anar-chapter h3 {
+  padding-top: var(--space-heading);
+  border-top: 1px solid rgba(13, 92, 99, 0.35);
+  font-size: var(--fs-h3);
+  line-height: var(--lh-heading);
+}
 
 .anar-body {
   margin: 0;
-  color: rgba(245, 239, 229, 0.86);
+  max-width: 520px;
+  color: rgba(59, 42, 33, 0.86);
   font-size: var(--fs-body);
   line-height: var(--lh-body);
 }
 
-.anar-fruit-anchor {
-  position: relative;
-  z-index: 1;
-  justify-self: center;
-  width: min(100%, 540px);
-  aspect-ratio: 440 / 520;
+@media (max-width: 900px) {
+  .anar-chapters { grid-template-columns: minmax(0, 1fr); align-items: start; gap: 48px; }
+  /* Show the fruit-bearing half of the branch larger; its tip runs off the left edge. */
+  .anar-branch { width: 185%; margin-left: calc(-85% + var(--section-x)); }
 }
 
-.anar-fruit {
-  display: block;
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-}
-
-.anar-trail {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 2;
-  overflow: visible;
-  pointer-events: none;
-}
-
-@media (max-width: 759px) {
-  .anar-ribbon-section { padding: var(--section-y) var(--section-x) 0; }
-  .anar-row { display: block; min-height: 0; padding-bottom: 260px; }
-  .anar-row-1 { display: flex; flex-direction: column-reverse; gap: 40px; padding-bottom: 260px; }
-  .anar-fruit-anchor { width: min(78vw, 360px); align-self: center; }
-  .anar-row-end { min-height: 90px; padding: 0; }
-  .anar-chapter { text-shadow: 0 2px 18px rgba(6, 50, 54, 0.8); }
+@media (prefers-reduced-motion: reduce) {
+  .branch-sway,
+  .branch-leaf,
+  .branch-fruit { animation: none; }
 }
 
 /* Hero: "Plant your seed" sits beside "Explore the menu" as its light counterpart */
@@ -3166,3 +3132,57 @@ footer[id] {
 @media (max-width: 680px) {
   .fa-about { right: 16px; bottom: 12px; font-size: 92px; }
 }
+
+/* Beige is the main colour: About, Menu and Location sit on beige, turquoise is the accent */
+.about-section {
+  color: var(--brown);
+  background: var(--cream);
+}
+
+.journey-menu-section {
+  color: var(--brown);
+  background: var(--cream);
+}
+
+.location-section {
+  color: var(--brown);
+  background: var(--cream);
+}
+
+.about-eyebrow,
+.journey-eyebrow,
+.location-eyebrow,
+.location-detail h3,
+.fa-menu {
+  color: var(--turquoise);
+}
+
+.about-header h2,
+.journey-menu-content h2,
+.location-content h2 {
+  color: var(--turquoise);
+}
+
+.about-pattern { display: none; }
+.fa-about { color: var(--turquoise); opacity: 0.07; }
+
+.location-detail address,
+.location-detail dl {
+  color: var(--brown);
+}
+
+.location-detail a,
+.location-detail dd,
+.location-phone {
+  color: var(--turquoise);
+}
+
+.location-detail a:hover { color: var(--red); }
+
+/* The carpet field in the menu section becomes a quiet tone-on-tone weave */
+.journey-field .field-cell { fill: #f1e8d8; }
+.journey-field .field-line { stroke: #e4d6ba; }
+.journey-field .field-petal { fill: #e8dcc4; }
+.journey-field .field-palmette { fill: #ecE1cc; }
+.journey-field .field-dot { fill: #dccba6; }
+.journey-field .field-seed { fill: #e4d6ba; }

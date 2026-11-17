@@ -1,8 +1,8 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { CarpetField, CarpetRunner, Medallion, MenuPomegranate, Paisley } from './persian.jsx';
-import { AnarRibbonSection } from './anar-ribbon.jsx';
+import { CarpetField, MenuPomegranate } from './persian.jsx';
+import { AnarBranchSection } from './anar-branch.jsx';
 import { PLANT_URL } from './site.js';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -632,7 +632,7 @@ function AboutHistory() {
   }, []);
 
   return (
-    <section className="about-section" id="about" ref={sectionRef} aria-labelledby="about-title" data-nav-theme="light">
+    <section className="about-section" id="about" ref={sectionRef} aria-labelledby="about-title" data-nav-theme="dark">
       <div className="about-pattern" aria-hidden="true" />
       <PersianWord className="fa-about">مهمان‌نوازی</PersianWord>
       <div className="about-layout">
@@ -793,11 +793,6 @@ function StoryTimeline() {
 
   return (
     <section className="story-section" id="story" ref={sectionRef} aria-labelledby="story-title" data-nav-theme="dark">
-      <div className="story-pattern" aria-hidden="true" />
-      <Medallion className="story-corner story-corner-top" spin={70} />
-      <Medallion className="story-corner story-corner-bottom" spin={-70} />
-      <Paisley className="story-paisley story-paisley-one" speed={1.2} />
-      <Paisley className="story-paisley story-paisley-two" speed={-0.8} />
       <header className="story-header">
         <PersianWord className="fa-story">داستان ما</PersianWord>
         <p className="story-eyebrow">Our journey</p>
@@ -877,7 +872,7 @@ function JourneyMenuDiscovery() {
   }, []);
 
   return (
-    <section className="journey-menu-section" id="menu" ref={sectionRef} aria-labelledby="journey-menu-title" data-nav-theme="light">
+    <section className="journey-menu-section" id="menu" ref={sectionRef} aria-labelledby="journey-menu-title" data-nav-theme="dark">
       <CarpetField className="journey-field" />
       <div className="journey-menu-inner">
         <div className="journey-menu-content">
@@ -1001,7 +996,7 @@ function OurLocation() {
       id="location"
       ref={sectionRef}
       aria-labelledby="location-title"
-      data-nav-theme="light"
+      data-nav-theme="dark"
     >
       <div className="location-inner">
         <div className="location-content">
@@ -1135,11 +1130,10 @@ export default function App() {
         </div>
         <StoryTimeline />
         <AboutHistory />
-        <AnarRibbonSection />
+        <AnarBranchSection />
         <JourneyMenuDiscovery />
         <OurLocation />
         <SocialGallery />
-        <CarpetRunner fringe />
       </main>
       <DayaFooter />
     </>
