@@ -2,64 +2,69 @@ import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { CarpetField, MenuPomegranate } from './persian.jsx';
-import { AnarBranchSection } from './anar-branch.jsx';
-import { PLANT_URL } from './site.js';
+import { PomegranateBranch } from './anar-branch.jsx';
+import { CONTACT_URL, MENUS, PLANT_URL, VISIT } from './site.js';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const asset = (path) => `${import.meta.env.BASE_URL}${path.replace(/^\/+/, '')}`;
 const media = (name) => asset(`media/${name}.avif`);
-const DIGITAL_MENU_URL = 'https://www.reservly.at/speisekarte/en/daya';
+const reduceMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const external = { target: '_blank', rel: 'noopener noreferrer' };
 
-// Hero slideshow. Each photo is used only here, so nothing repeats on the page.
-// Alternates evening and daytime.
+// Hero slideshow, alternating evening and daytime.
 const heroImages = ['nightterreza', 'dayagarden', 'nightwohnzimmerlight', 'dayagarden2'];
 
-const journeyImages = [
+const houseImages = [
+  { image: 'granat', className: 'about-card-one', alt: 'Fresh pomegranates in a wooden bowl at DAYA' },
+  { image: 'livingggroom', className: 'about-card-two', alt: 'The warmly lit lounge at DAYA' },
+  { image: 'granatapfel', className: 'about-card-three', alt: 'A pomegranate tree in the Ibiza sun beside a turquoise door at DAYA' },
+];
+
+const menuImages = [
   { image: 'naanteig', alt: 'Bread dough resting in the DAYA kitchen' },
-  { image: 'room', alt: 'Dining room at DAYA with Persian tiles and warm light' },
+  { image: 'naanheart', alt: 'Flatbread freshly baked in the DAYA kitchen' },
+  { image: 'brot', alt: 'Golden bread topped with sesame at DAYA' },
+];
+
+const houseStrip = [
+  { image: 'room', alt: 'Dining room at DAYA with patterned tiles and warm light' },
+  { image: 'barrr', alt: 'Turquoise-tiled bar with brass stools at DAYA' },
+  { image: 'night_inside', alt: 'Round table dressed in woven textiles inside DAYA at night' },
+  { image: 'night_gardentable', alt: 'Candlelit table on the DAYA terrace at night' },
   { image: 'entrance', alt: 'Turquoise doors, lantern and plants at the DAYA entrance' },
-];
-
-const socialImages = [
-  { image: 'night_logo', alt: 'The DAYA pomegranate emblem lit on a wall at night' },
   { image: 'nightlivvving', alt: 'Candlelit lounge corner at DAYA in the evening' },
-  { image: 'eingnag', alt: 'Warmly lit entrance and bar at DAYA' },
-];
-
-const experienceSlides = [
-  { title: 'The Restaurant', image: 'night_inside', alt: 'Round table dressed in Persian textiles inside DAYA at night' },
-  { title: 'The Bar', image: 'barrr', alt: 'Turquoise-tiled bar with brass stools at DAYA' },
-  { title: 'The Terrace', image: 'night_gardentable', alt: 'Candlelit table on the DAYA terrace at night' },
-  { title: 'The Kitchen', image: 'naanheart', alt: 'Flatbread freshly baked in the DAYA kitchen' },
 ];
 
 const primaryNavigation = [
   { label: 'Home', href: '#home' },
-  { label: 'Gallery', href: '#gallery' },
-  { label: 'Story', href: '#story' },
-  { label: 'About', href: '#about' },
-  { label: 'Menu', href: '#menu' },
-  { label: 'Location', href: '#location' },
+  { label: 'Our House', href: '#our-house' },
+  { label: 'Menus', href: '#menus' },
+  { label: 'Visit Us', href: '#visit' },
 ];
+
+// The original DAYA logo: pomegranate, wordmark and IBIZA. On light backgrounds it is tinted petrol.
+function DayaLogo({ layout = 'row' }) {
+  return (
+    <span
+      className={`daya-logo daya-logo-${layout}`}
+      style={{ '--logo-icon': `url(${asset('media/daya-icon.avif')})`, '--logo-wordmark': `url(${asset('media/daya-wordmark.avif')})` }}
+      aria-hidden="true"
+    >
+      <span className="daya-logo-icon" />
+      <span className="daya-logo-text">
+        <span className="daya-logo-wordmark" />
+        <span className="daya-logo-place">Ibiza</span>
+      </span>
+    </span>
+  );
+}
 
 function DayaOrnament({ side }) {
   return (
     <svg className={`daya-button-ornament daya-button-ornament-${side}`} viewBox="0 0 16 16" aria-hidden="true">
       <path d="M8 0.8c.7 4.3 2.9 6.5 7.2 7.2-4.3.7-6.5 2.9-7.2 7.2C7.3 10.9 5.1 8.7.8 8 5.1 7.3 7.3 5.1 8 .8Z" />
       <circle cx="8" cy="8" r="1.15" />
-    </svg>
-  );
-}
-
-// A sprouted pomegranate seed.
-function SproutIcon() {
-  return (
-    <svg className="sprout-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-      <path className="sprout-stem" d="M12 14.5V8.2" />
-      <path className="sprout-leaf sprout-leaf-left" d="M12 10.4C9.6 10.6 7.9 9.4 7.4 7.1 9.8 6.8 11.5 8 12 10.4Z" />
-      <path className="sprout-leaf sprout-leaf-right" d="M12 9.1C12.6 6.8 14.4 5.7 16.8 6 16.2 8.3 14.4 9.4 12 9.1Z" />
-      <path className="sprout-seed" d="M12 13.2C14.3 13.2 15.6 15 15.6 17 15.6 19.2 13.9 20.8 12 20.8 10.1 20.8 8.4 19.2 8.4 17 8.4 15 9.7 13.2 12 13.2Z" />
     </svg>
   );
 }
@@ -88,7 +93,7 @@ function DayaButton({ href, label, className = '', icon = null, ...linkProps }) 
           style={{
             '--char-exit-y': exitsDown ? '18px' : '-18px',
             '--char-enter-y': exitsDown ? '-18px' : '18px',
-            '--char-delay': `${characterIndex * 18}ms`,
+            '--char-delay': `${characterIndex * 10}ms`,
           }}
         >
           {character}
@@ -146,6 +151,8 @@ function MenuOverlay({ open, onClose, home = '' }) {
     };
   }, [open, onClose]);
 
+  const tabIndex = open ? 0 : -1;
+
   return (
     <div
       id="site-menu"
@@ -158,9 +165,8 @@ function MenuOverlay({ open, onClose, home = '' }) {
     >
       <MenuPomegranate />
       <div className="menu-header">
-        <a className="menu-signature" href={`${home}#home`} onClick={() => onClose(false)} tabIndex={open ? 0 : -1} aria-label="DAYA home">
-          <img className="menu-brand-icon" src={asset('media/daya-icon.avif')} alt="" />
-          <img className="menu-brand-wordmark" src={asset('media/daya-wordmark.avif')} alt="" />
+        <a className="menu-signature" href={`${home}#home`} onClick={() => onClose(false)} tabIndex={tabIndex} aria-label="DAYA Ibiza home">
+          <DayaLogo />
         </a>
         <button ref={closeRef} className="close-menu" onClick={onClose} aria-label="Close navigation">
           <span />
@@ -170,20 +176,22 @@ function MenuOverlay({ open, onClose, home = '' }) {
 
       <nav className="menu-nav" aria-label="Primary navigation">
         {primaryNavigation.map((item, index) => (
-          <a
-            key={item.label}
-            href={`${home}${item.href}`}
-            onClick={() => onClose(false)}
-            tabIndex={open ? 0 : -1}
-            style={{ '--menu-index': index }}
-          >
-            <span className="menu-index" aria-hidden="true">0{index + 1}</span>
-            <span className="menu-label">{item.label}</span>
-            <span className="menu-line" />
-          </a>
+          <React.Fragment key={item.label}>
+            <a className="menu-nav-item" href={`${home}${item.href}`} onClick={() => onClose(false)} tabIndex={tabIndex} style={{ '--menu-index': index }}>
+              <span className="menu-index" aria-hidden="true">0{index + 1}</span>
+              <span className="menu-label">{item.label}</span>
+              <span className="menu-line" />
+            </a>
+            {item.href === '#menus' && (
+              <div className="menu-sublinks" style={{ '--menu-index': index }}>
+                {MENUS.map((menu) => (
+                  <a key={menu.id} href={menu.href} {...external} onClick={() => onClose(false)} tabIndex={tabIndex}>{menu.label}</a>
+                ))}
+              </div>
+            )}
+          </React.Fragment>
         ))}
       </nav>
-
     </div>
   );
 }
@@ -218,6 +226,8 @@ function SiteNav({ onMenuOpen, menuOpen, menuTriggerRef, home = '' }) {
     };
   }, []);
 
+  const link = (item) => <a key={item.label} href={`${home}${item.href}`}>{item.label}</a>;
+
   return (
     <header className="hero-nav" data-theme={theme}>
       <button
@@ -234,10 +244,15 @@ function SiteNav({ onMenuOpen, menuOpen, menuTriggerRef, home = '' }) {
           <span />
         </span>
       </button>
-      <a className="hero-wordmark" href={`${home}#home`} aria-label="DAYA home">
-        <img src={asset('media/daya-wordmark.avif')} alt="" />
+      <nav className="nav-links nav-links-left" aria-label="Primary navigation">
+        {primaryNavigation.slice(0, 2).map(link)}
+      </nav>
+      <a className="nav-logo" href={`${home}#home`} aria-label="DAYA Ibiza home">
+        <DayaLogo />
       </a>
-      <span className="nav-location">Ibiza · 38°59′N</span>
+      <nav className="nav-links nav-links-right" aria-label="Menus and visit">
+        {primaryNavigation.slice(2).map(link)}
+      </nav>
     </header>
   );
 }
@@ -247,12 +262,13 @@ function Hero() {
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      if (reduceMotion()) return undefined;
 
       gsap.timeline({ defaults: { ease: 'power3.out' } })
-        .from('.hero-title-line', { yPercent: 110, duration: 1.15, stagger: 0.09 }, 0.3)
-        .from('.hero-subtext', { y: 22, opacity: 0, duration: 0.9 }, 0.78)
-        .from('.hero-actions', { y: 18, opacity: 0, duration: 0.8 }, 0.95);
+        .from('.hero-kicker', { y: 14, opacity: 0, duration: 0.8 }, 0.2)
+        .from('.hero-title-line', { yPercent: 110, duration: 1 }, 0.3)
+        .from('.hero-lead', { y: 22, opacity: 0, duration: 0.9 }, 0.7)
+        .from('.hero-actions', { y: 18, opacity: 0, duration: 0.8 }, 0.9);
 
       // Slideshow: each photo holds for a while, then cross-fades into the next with a slow zoom.
       const slides = gsap.utils.toArray('.hero-slide');
@@ -275,12 +291,7 @@ function Hero() {
       gsap.to('.hero-media', {
         scale: 1.08,
         ease: 'none',
-        scrollTrigger: {
-          trigger: heroRef.current,
-          start: 'top top',
-          end: 'bottom top',
-          scrub: 1.2,
-        },
+        scrollTrigger: { trigger: heroRef.current, start: 'top top', end: 'bottom top', scrub: 1.2 },
       });
 
       return () => window.clearInterval(interval);
@@ -306,339 +317,96 @@ function Hero() {
       <div className="hero-scrim" />
 
       <div className="hero-content">
-        <p className="hero-kicker">Persian dining · Ibiza</p>
+        <p className="hero-kicker">
+          <span>DAYA · Ibiza</span>
+          <span>Restaurant · Lounge · Bar</span>
+        </p>
         <h1 id="hero-title">
-          <span className="hero-title-mask"><span className="hero-title-line">Persian soul.</span></span>
-          <span className="hero-title-mask"><span className="hero-title-line">Modern expression.</span></span>
+          <span className="hero-title-mask"><span className="hero-title-line">A place to arrive.</span></span>
         </h1>
-        <p className="hero-subtext">
-          <span>A modern Persian table shaped by fire,</span>
-          <span>seasonal produce and generous hospitality.</span>
+        <p className="hero-lead">
+          It all begins with a seed. A table brings people together. A house becomes a place of belonging.
         </p>
         <div className="hero-actions">
-          <DayaButton className="daya-button-hero" href={DIGITAL_MENU_URL} label="Explore the menu" target="_blank" rel="noopener noreferrer" />
-          <DayaButton className="daya-button-hero daya-button-seed" href={PLANT_URL} label="Plant your seed" icon={<SproutIcon />} />
+          <DayaButton className="daya-button-hero" href="#menus" label="Explore Our Menus" />
+          <DayaButton className="daya-button-hero daya-button-light" href={PLANT_URL} label="Plant Your Seed" />
         </div>
       </div>
     </section>
   );
 }
 
-function SliderArrow({ direction, onClick, disabled }) {
-  const isPrevious = direction === 'previous';
-
-  return (
-    <button
-      className={`experience-arrow experience-arrow-${isPrevious ? 'previous' : 'next'}`}
-      type="button"
-      onClick={onClick}
-      disabled={disabled}
-      aria-label={isPrevious ? 'Previous image' : 'Next image'}
-    >
-      <svg viewBox="0 0 64 48" aria-hidden="true">
-        <path className="arrow-seed" d="M10 19.5c4 2.4 4 6.6 0 9-4-2.4-4-6.6 0-9Z" />
-        <path className="arrow-stem" d="M13 24c12-.35 24.5-.35 38 0" />
-        <path className="arrow-head" d="M41 14.5c3.3 3.9 6.7 7.1 10 9.5-3.3 2.4-6.7 5.6-10 9.5" />
-        <path className="arrow-flourish" d="M44 18.6c1.7.8 3.1 1.2 4.6 1.5" />
-      </svg>
-    </button>
-  );
-}
-
-function ExperienceSlide({ slide, className, slideRef }) {
-  return (
-    <figure className={`experience-slide ${className}`} ref={slideRef} aria-hidden={className.includes('incoming')}>
-      <img src={media(slide.image)} alt={slide.alt} draggable="false" />
-    </figure>
-  );
-}
-
-function SliderMeta({ index, total, title, metaRef }) {
-  return (
-    <div className="experience-meta" ref={metaRef} aria-live="polite" aria-atomic="true">
-      <span className="experience-meta-mask">
-        <span className="experience-count">
-          {String(index + 1).padStart(2, '0')} / {String(total).padStart(2, '0')}
-        </span>
-      </span>
-      <span className="experience-rule" aria-hidden="true" />
-      <span className="experience-meta-mask experience-title-mask">
-        <span className="experience-title">{title}</span>
-      </span>
-    </div>
-  );
-}
-
-function ExperienceSlider({ embedded = false }) {
-  const sectionRef = useRef(null);
-  const viewportRef = useRef(null);
-  const currentSlideRef = useRef(null);
-  const incomingSlideRef = useRef(null);
-  const metaRef = useRef(null);
-  const pointerStartRef = useRef(null);
-  const hasChangedSlideRef = useRef(false);
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [incomingIndex, setIncomingIndex] = useState(null);
-  const [direction, setDirection] = useState(1);
-  const [isAnimating, setIsAnimating] = useState(false);
-
-  const changeSlide = (step) => {
-    if (isAnimating) return;
-    const nextIndex = (activeIndex + step + experienceSlides.length) % experienceSlides.length;
-    setDirection(step > 0 ? 1 : -1);
-    setIncomingIndex(nextIndex);
-    setIsAnimating(true);
-  };
-
+// Fades the direct children of every [data-reveal] block in as it scrolls into view.
+function useReveal(ref) {
   useLayoutEffect(() => {
-    if (incomingIndex === null || !incomingSlideRef.current || !currentSlideRef.current) return undefined;
-
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduceMotion) {
-      setActiveIndex(incomingIndex);
-      setIncomingIndex(null);
-      setIsAnimating(false);
-      return undefined;
-    }
-
-    const current = currentSlideRef.current;
-    const incoming = incomingSlideRef.current;
-    const metaText = metaRef.current?.querySelectorAll('.experience-count, .experience-title');
-    const metaRule = metaRef.current?.querySelector('.experience-rule');
-    const hiddenSide = direction > 0 ? 'inset(0 0 0 100%)' : 'inset(0 100% 0 0)';
-
-    gsap.set(incoming, {
-      clipPath: hiddenSide,
-      xPercent: direction * 5,
-      opacity: 1,
-    });
-
-    const timeline = gsap.timeline({
-      defaults: { duration: 0.9, ease: 'power3.inOut' },
-      onComplete: () => {
-        setActiveIndex(incomingIndex);
-        setIncomingIndex(null);
-        setIsAnimating(false);
-      },
-    });
-
-    timeline
-      .to(current, { xPercent: direction * -4, opacity: 0.52 }, 0)
-      .to(incoming, { clipPath: 'inset(0 0% 0 0%)', xPercent: 0 }, 0)
-      .to(metaText, { yPercent: direction > 0 ? -120 : 120, opacity: 0, duration: 0.38, stagger: 0.055, ease: 'power2.in' }, 0)
-      .to(metaRule, { scaleX: 0, transformOrigin: direction > 0 ? 'right center' : 'left center', duration: 0.42, ease: 'power2.inOut' }, 0);
-
-    return () => timeline.kill();
-  }, [incomingIndex, direction]);
-
-  useLayoutEffect(() => {
-    if (incomingIndex !== null || !currentSlideRef.current) return undefined;
-
-    gsap.set(currentSlideRef.current, { clearProps: 'clipPath,xPercent,opacity' });
-    const metaText = metaRef.current?.querySelectorAll('.experience-count, .experience-title');
-    const metaRule = metaRef.current?.querySelector('.experience-rule');
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      gsap.set([metaText, metaRule], { clearProps: 'all' });
-      return undefined;
-    }
-
-    if (!hasChangedSlideRef.current) {
-      hasChangedSlideRef.current = true;
-      gsap.set([metaText, metaRule], { clearProps: 'all' });
-      return undefined;
-    }
-
-    const timeline = gsap.timeline();
-    timeline
-      .fromTo(metaText, { yPercent: direction > 0 ? 120 : -120, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 0.62, stagger: 0.075, ease: 'power3.out' }, 0)
-      .fromTo(metaRule, { scaleX: 0, transformOrigin: direction > 0 ? 'left center' : 'right center' }, { scaleX: 1, duration: 0.68, ease: 'power3.inOut' }, 0.08);
-    return () => timeline.kill();
-  }, [activeIndex, incomingIndex]);
-
-  useLayoutEffect(() => {
-    if (embedded) return undefined;
-
+    if (reduceMotion()) return undefined;
     const ctx = gsap.context(() => {
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-      const entrance = gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top 72%',
-          once: true,
-        },
+      gsap.utils.toArray('[data-reveal]').forEach((block) => {
+        gsap.from(block.children, {
+          y: 20,
+          opacity: 0,
+          duration: 0.8,
+          stagger: 0.08,
+          ease: 'power3.out',
+          scrollTrigger: { trigger: block, start: 'top 86%', once: true },
+        });
       });
-
-      entrance
-        .from('.experience-heading-line', { yPercent: 105, duration: 0.95, ease: 'power3.out' }, 0.08)
-        .from('.experience-intro', { y: 16, opacity: 0, duration: 0.7, ease: 'power3.out' }, 0.22)
-        .fromTo(viewportRef.current, { clipPath: 'inset(0 100% 0 0)' }, { clipPath: 'inset(0 0% 0 0)', duration: 1.05, ease: 'power3.inOut' }, 0)
-        .from('.experience-arrow', { opacity: 0, scale: 0.9, duration: 0.55, stagger: 0.1, ease: 'power2.out' }, 0.62);
-    }, sectionRef);
-
+    }, ref);
     return () => ctx.revert();
-  }, [embedded]);
+  }, [ref]);
+}
 
-  const onKeyDown = (event) => {
-    if (event.key === 'ArrowLeft') {
-      event.preventDefault();
-      changeSlide(-1);
-    }
-    if (event.key === 'ArrowRight') {
-      event.preventDefault();
-      changeSlide(1);
-    }
-  };
-
-  const onPointerDown = (event) => {
-    if (event.pointerType === 'mouse' && event.button !== 0) return;
-    pointerStartRef.current = { x: event.clientX, y: event.clientY };
-    event.currentTarget.setPointerCapture?.(event.pointerId);
-  };
-
-  const onPointerUp = (event) => {
-    const start = pointerStartRef.current;
-    pointerStartRef.current = null;
-    if (!start) return;
-
-    const deltaX = event.clientX - start.x;
-    const deltaY = event.clientY - start.y;
-    if (Math.abs(deltaX) > 44 && Math.abs(deltaX) > Math.abs(deltaY) * 1.15) {
-      changeSlide(deltaX < 0 ? 1 : -1);
-    }
-  };
+function Welcome() {
+  const sectionRef = useRef(null);
+  useReveal(sectionRef);
 
   return (
-    <section
-      className={`experience-section${embedded ? ' experience-section-embedded' : ''}`}
-      id="experience"
-      ref={sectionRef}
-      aria-labelledby="experience-title"
-      data-nav-theme="light"
-      tabIndex="0"
-      onKeyDown={onKeyDown}
-    >
-      <div className="experience-stage">
-        <div className="experience-composition">
-          <header className="experience-header">
-            <h2 id="experience-title">
-              <span className="experience-heading-mask"><span className="experience-heading-line">Inside DAYA.</span></span>
-            </h2>
-            <p className="experience-intro">Move through the spaces, details, and rituals that shape a night at DAYA.</p>
-          </header>
-
-          <div className="experience-media-row">
-            <SliderArrow direction="previous" onClick={() => changeSlide(-1)} disabled={isAnimating} />
-            <div
-              className="experience-viewport"
-              ref={viewportRef}
-              onPointerDown={onPointerDown}
-              onPointerUp={onPointerUp}
-              onPointerCancel={() => { pointerStartRef.current = null; }}
-            >
-              <ExperienceSlide
-                key={`current-${activeIndex}`}
-                slide={experienceSlides[activeIndex]}
-                className="experience-slide-current"
-                slideRef={currentSlideRef}
-              />
-              {incomingIndex !== null && (
-                <ExperienceSlide
-                  key={`incoming-${incomingIndex}`}
-                  slide={experienceSlides[incomingIndex]}
-                  className="experience-slide-incoming"
-                  slideRef={incomingSlideRef}
-                />
-              )}
-            </div>
-            <SliderArrow direction="next" onClick={() => changeSlide(1)} disabled={isAnimating} />
-          </div>
-
-          <SliderMeta
-            index={activeIndex}
-            total={experienceSlides.length}
-            title={experienceSlides[activeIndex].title}
-            metaRef={metaRef}
-          />
-        </div>
+    <section className="welcome-section" ref={sectionRef} aria-label="Welcome to DAYA" data-nav-theme="dark">
+      <div className="welcome-inner" data-reveal>
+        <p className="welcome-lead">
+          Welcome to DAYA — our family’s hospitality house in Ibiza. Our mother’s recipes are at its heart, bringing people together over food, tea and drinks.
+        </p>
+        <p>Come for lunch. Share dinner. Settle in for a cocktail or a tea.</p>
+        <p className="welcome-close">There’s a place for you here.</p>
       </div>
     </section>
   );
 }
 
-const aboutImages = [
-  { image: 'brot', className: 'about-card-one', alt: 'Golden Persian bread topped with sesame at DAYA' },
-  { image: 'bar', className: 'about-card-two', alt: 'Persian rugs and a painted pomegranate tree inside DAYA' },
-  { image: 'saeule', className: 'about-card-three', alt: 'Turquoise and gold column detail at DAYA' },
-];
-
-function AboutHistory() {
+function OurHouse() {
   const sectionRef = useRef(null);
   const stackRef = useRef(null);
+  useReveal(sectionRef);
 
   useLayoutEffect(() => {
+    if (reduceMotion()) return undefined;
     const ctx = gsap.context(() => {
-      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (reduceMotion) return;
-
-      const cards = gsap.utils.toArray('.about-image-card');
       const mobile = window.matchMedia('(max-width: 680px)').matches;
-      const restingRotations = mobile ? [-3.5, 1.5, -2] : [-6, 2, -3];
-      const startingRotations = mobile ? [-8, 6, -6] : [-13, 9, -9];
-
-      gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top 72%',
-          toggleActions: 'play none restart reverse',
-        },
-      })
-        .from('.about-eyebrow', { y: 12, duration: 0.6, ease: 'power2.out' }, 0)
-        .from('.about-heading-line', {
-          y: 22,
-          opacity: 0,
-          duration: 0.8,
-          stagger: 0.1,
-          ease: 'power3.out',
-        }, 0.1)
-        .from('.about-history > p', {
-          y: 18,
-          opacity: 0,
-          duration: 0.8,
-          stagger: 0.11,
-          ease: 'power3.out',
-        }, 0.22);
-
-      gsap.fromTo(cards, {
+      const resting = mobile ? [-3.5, 1.5, -2] : [-6, 2, -3];
+      const starting = mobile ? [-8, 6, -6] : [-13, 9, -9];
+      gsap.fromTo('.about-image-card', {
         y: 58,
         opacity: 0,
-        rotation: (index) => startingRotations[index],
+        rotation: (index) => starting[index],
       }, {
         y: 0,
         opacity: 1,
-        rotation: (index) => restingRotations[index],
+        rotation: (index) => resting[index],
         duration: 1,
         stagger: 0.22,
         ease: 'power3.out',
-        scrollTrigger: {
-          trigger: stackRef.current,
-          start: 'top 82%',
-          toggleActions: 'play none restart reverse',
-        },
+        scrollTrigger: { trigger: stackRef.current, start: 'top 82%', once: true },
       });
     }, sectionRef);
-
     return () => ctx.revert();
   }, []);
 
   return (
-    <section className="about-section" id="about" ref={sectionRef} aria-labelledby="about-title" data-nav-theme="dark">
-      <div className="about-pattern" aria-hidden="true" />
-      <PersianWord className="fa-about">مهمان‌نوازی</PersianWord>
+    <section className="about-section" id="our-house" ref={sectionRef} aria-labelledby="our-house-title" data-nav-theme="dark">
       <div className="about-layout">
         <div className="about-visual">
-          <div className="about-image-stack" ref={stackRef} aria-label="The craft and atmosphere of DAYA">
-            {aboutImages.map((item) => (
+          <div className="about-image-stack" ref={stackRef}>
+            {houseImages.map((item) => (
               <figure className={`about-image-card ${item.className}`} key={item.image}>
                 <img src={media(item.image)} alt={item.alt} loading="lazy" />
               </figure>
@@ -646,29 +414,36 @@ function AboutHistory() {
           </div>
         </div>
 
-        <div className="about-history">
-          <header className="about-header">
-            <p className="about-eyebrow">Our philosophy</p>
-            <h2 id="about-title">
-              <span className="about-heading-line">About</span>
-              <span className="about-heading-line about-heading-accent">DAYA.</span>
-            </h2>
-          </header>
+        <div className="about-history" data-reveal>
+          <p className="section-eyebrow">Our House</p>
+          <h2 className="section-title" id="our-house-title">Many seeds. One home.</h2>
           <p>
-            DAYA brings Persian hospitality into conversation with the relaxed rhythm of Ibiza. It is a place to arrive without hurry, gather around a generous table, and feel looked after from the first welcome to the last glass.
+            DAYA means “mother” in Kurdish. Life begins with a mother. Our house begins with ours — her recipes, her generosity and the way she makes people feel at home.
           </p>
           <p>
-            Our cooking begins with the flavours that define Persian kitchens—saffron, herbs, citrus, smoke, pomegranate, and slow-built spice. Seasonal ingredients and a contemporary approach keep every dish vibrant, precise, and made to share.
+            We are a Kurdish family with roots in Iran. Our mother’s cooking carries our traditions, enriched by friendships and flavours from around the world.
           </p>
+          <p className="about-highlight">Her recipes are the heart of DAYA.</p>
           <p>
-            The same dialogue runs through the room: turquoise tile, aged brass, dark timber, woven textiles, candlelight, and music. Together they create a setting rooted in culture and unmistakably part of the island.
+            Hospitality is how we grew up: making space, sharing food and always welcoming one more.
           </p>
         </div>
+      </div>
+
+      <PomegranateBranch className="house-branch" />
+
+      <div className="house-closing" data-reveal>
+        <p>
+          For us, the pomegranate is a reminder of togetherness — many seeds held within one fruit, like different stories gathered around a table. And just as a seed needs time to grow, we believe the best moments deserve room to unfold.
+        </p>
+        <p>Stay for another tea. Share a little more. Laugh, talk about life, or simply enjoy being here.</p>
+        <p className="house-welcome">Welcome to our house.</p>
       </div>
     </section>
   );
 }
 
+// The story of DAYA: four chapters along a line that fills as you scroll.
 const storyEntries = [
   {
     label: '01 · The roots',
@@ -677,34 +452,34 @@ const storyEntries = [
     image: 'night_entraze',
     alt: 'An open studded door leading into DAYA at night',
     side: 'left',
-    rotation: -4,
+    rotation: -3,
   },
   {
     label: '02 · The craft',
     title: 'Memory becomes flavour.',
     body: 'Saffron, herbs, smoke, citrus, and pomegranate connect the menu to Persian memory. The kitchen refines those familiar flavours with seasonal produce and a clear, contemporary hand.',
-    image: 'granat',
-    alt: 'Fresh pomegranates in a wooden bowl at DAYA',
+    image: 'bar',
+    alt: 'The DAYA kitchen counter dressed in woven rugs beneath a painted pomegranate tree',
     side: 'right',
-    rotation: 3,
+    rotation: 2.5,
   },
   {
     label: '03 · The island',
     title: 'The island changes the rhythm.',
     body: 'Ibiza brings openness to the experience—long evenings, sea air, natural materials, and a slower sense of time. Persian warmth and island ease meet without either losing its character.',
-    image: 'granatapfel',
-    alt: 'A pomegranate tree in the Ibiza sun beside a turquoise door at DAYA',
+    image: 'eingnag',
+    alt: 'Turquoise shutters, a terracotta planter and a Persian rug in the daylight at DAYA',
     side: 'left',
-    rotation: -2.5,
+    rotation: -2,
   },
   {
     label: '04 · Today',
     title: 'One table, many stories.',
     body: 'DAYA today is a place for shared plates, unhurried conversation, and nights that move naturally from terrace to table. Food, design, music, and hospitality become one continuous experience.',
-    image: 'livingggroom',
-    alt: 'Guests gathering in the warmly lit DAYA lounge',
+    image: 'night_logo',
+    alt: 'The DAYA pomegranate sign glowing on a warm wall at night',
     side: 'right',
-    rotation: 3.5,
+    rotation: 3,
   },
 ];
 
@@ -713,92 +488,49 @@ function StorySeeds({ count }) {
     <span className="story-seeds" data-count={count}>
       {Array.from({ length: count }, (_, index) => (
         <svg className="story-seed" viewBox="0 0 24 32" key={index} focusable="false" aria-hidden="true">
-          <path className="story-seed-body" d="M12 3.7c-1.2 1.2-5.1 4.1-6.2 8.3C4.1 18.6 7 25.9 12 28.3c5-2.4 7.9-9.7 6.2-16.3C17.1 7.8 13.2 4.9 12 3.7Z" />
-          <path className="story-seed-membrane" d="M12 6.1c-.7 1.7-2.1 3-3.1 4.8-.8 1.4-1.3 3-1.3 4.8" />
-          <path className="story-seed-highlight" d="M10.8 9.3c-1.2 1.8-2.1 3.7-2.2 5.5" />
-          <circle className="story-seed-glint" cx="14.8" cy="11.2" r="1.15" />
+          <path d="M12 3.7c-1.2 1.2-5.1 4.1-6.2 8.3C4.1 18.6 7 25.9 12 28.3c5-2.4 7.9-9.7 6.2-16.3C17.1 7.8 13.2 4.9 12 3.7Z" />
         </svg>
       ))}
     </span>
   );
 }
 
-function StoryTimeline() {
+function Story() {
   const sectionRef = useRef(null);
   const listRef = useRef(null);
+  useReveal(sectionRef);
 
   useLayoutEffect(() => {
+    if (reduceMotion()) return undefined;
     const ctx = gsap.context(() => {
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const mobile = window.matchMedia('(max-width: 680px)').matches;
 
-      gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top 72%',
-          toggleActions: 'play none none reverse',
-        },
-      })
-        .from('.story-eyebrow', { y: 12, opacity: 0, duration: 0.55, ease: 'power2.out' }, 0)
-        .from('.story-heading-line', { yPercent: 105, duration: 0.95, ease: 'power3.out' }, 0.08)
-        .from('.story-intro', { y: 18, opacity: 0, duration: 0.7, ease: 'power3.out' }, 0.24);
-
+      // Each chapter arrives once and then stays put, so reading is never interrupted.
       gsap.utils.toArray('.story-entry').forEach((entry, index) => {
-        const image = entry.querySelector('.story-image-card');
-        const text = entry.querySelector('.story-copy');
-        const marker = entry.querySelector('.story-marker');
         const item = storyEntries[index];
-        const mobile = window.matchMedia('(max-width: 680px)').matches;
-        const restingRotation = mobile ? item.rotation * 0.55 : item.rotation;
-        const startingRotation = restingRotation + (item.side === 'left' ? -5 : 5);
-
-        gsap.timeline({
-          scrollTrigger: {
-            trigger: entry,
-            start: 'top 76%',
-            toggleActions: 'play none restart reverse',
-          },
-        })
-          .from(marker, { scale: 0.78, opacity: 0, duration: 0.62, ease: 'power3.out' }, 0)
-          .fromTo(image, {
-            y: 44,
-            opacity: 0,
-            scale: 0.97,
-            rotation: startingRotation,
-          }, {
-            y: 0,
-            opacity: 1,
-            scale: 1,
-            rotation: restingRotation,
-            duration: 1,
-            ease: 'power3.out',
-          }, 0.06)
-          .from(text, { y: 30, opacity: 0, duration: 0.88, ease: 'power3.out' }, 0.18)
-          .to(marker, { scale: 1.035, duration: 0.28, yoyo: true, repeat: 1, ease: 'power2.inOut' }, 0.46);
+        const resting = mobile ? item.rotation * 0.5 : item.rotation;
+        gsap.timeline({ scrollTrigger: { trigger: entry, start: 'top 80%', once: true }, defaults: { ease: 'power3.out' } })
+          .from(entry.querySelector('.story-marker'), { scale: 0.7, opacity: 0, duration: 0.5 }, 0)
+          .fromTo(entry.querySelector('.story-image-card'),
+            { y: 36, opacity: 0, rotation: resting + (item.side === 'left' ? -3 : 3) },
+            { y: 0, opacity: 1, rotation: resting, duration: 0.9 }, 0.05)
+          .from(entry.querySelector('.story-copy').children, { y: 20, opacity: 0, duration: 0.7, stagger: 0.08 }, 0.15);
       });
 
       gsap.fromTo('.story-progress', { scaleY: 0 }, {
         scaleY: 1,
         ease: 'none',
-        scrollTrigger: {
-          trigger: listRef.current,
-          start: 'top center',
-          end: 'bottom center',
-          scrub: 0.8,
-        },
+        scrollTrigger: { trigger: listRef.current, start: 'top 62%', end: 'bottom 62%', scrub: 0.6 },
       });
     }, sectionRef);
-
     return () => ctx.revert();
   }, []);
 
   return (
     <section className="story-section" id="story" ref={sectionRef} aria-labelledby="story-title" data-nav-theme="dark">
-      <header className="story-header">
-        <PersianWord className="fa-story">داستان ما</PersianWord>
-        <p className="story-eyebrow">Our journey</p>
-        <h2 id="story-title">
-          <span className="story-heading-mask"><span className="story-heading-line">The story of DAYA.</span></span>
-        </h2>
+      <header className="story-header" data-reveal>
+        <p className="section-eyebrow">Our journey</p>
+        <h2 className="section-title" id="story-title">The story of DAYA.</h2>
         <p className="story-intro">Four chapters in the making of a Persian dining experience with an Ibizan rhythm.</p>
       </header>
 
@@ -822,75 +554,67 @@ function StoryTimeline() {
   );
 }
 
-function JourneyMenuDiscovery() {
+function Menus() {
   const sectionRef = useRef(null);
+  useReveal(sectionRef);
 
   useLayoutEffect(() => {
+    if (reduceMotion()) return undefined;
     const ctx = gsap.context(() => {
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-      gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top 72%',
-          once: true,
-        },
-      })
-        .from('.journey-eyebrow', { y: 12, opacity: 0, duration: 0.6, ease: 'power2.out' })
-        .from('.journey-heading-line', { yPercent: 110, duration: 1, ease: 'power3.out' }, 0.08)
-        .from('.journey-copy', { y: 22, opacity: 0, duration: 0.8, ease: 'power3.out' }, 0.2)
-        .from('.journey-actions .daya-button', { y: 16, duration: 0.7, ease: 'power3.out' }, 0.38)
-        .from('.journey-image-shell', { y: 28, opacity: 0, duration: 0.9, stagger: 0.1, ease: 'power3.out' }, 0.5);
+      gsap.from('.journey-image-shell', {
+        y: 28,
+        opacity: 0,
+        duration: 0.9,
+        stagger: 0.1,
+        ease: 'power3.out',
+        scrollTrigger: { trigger: '.journey-image-row', start: 'top 85%', once: true },
+      });
 
       const mm = gsap.matchMedia();
-      mm.add(
-        { desktop: '(min-width: 681px)', mobile: '(max-width: 680px)' },
-        ({ conditions }) => {
-          const amount = conditions.mobile ? 26 : 58;
-          gsap.utils.toArray('.journey-image-card').forEach((image, index) => {
-            const direction = index % 2 === 0 ? 1 : -1;
-            gsap.fromTo(image, {
-              y: direction * amount,
-            }, {
-              y: direction * -amount,
-              ease: 'none',
-              scrollTrigger: {
-                trigger: sectionRef.current,
-                start: 'top bottom',
-                end: 'bottom top',
-                scrub: 1.2,
-              },
-            });
+      mm.add({ desktop: '(min-width: 681px)', mobile: '(max-width: 680px)' }, ({ conditions }) => {
+        const amount = conditions.mobile ? 10 : 30;
+        gsap.utils.toArray('.journey-image-card').forEach((image, index) => {
+          const direction = index % 2 === 0 ? 1 : -1;
+          gsap.fromTo(image, { y: direction * amount }, {
+            y: direction * -amount,
+            ease: 'none',
+            scrollTrigger: { trigger: '.journey-image-row', start: 'top bottom', end: 'bottom top', scrub: 1.2 },
           });
-        },
-      );
-
+        });
+      });
       return () => mm.revert();
     }, sectionRef);
-
     return () => ctx.revert();
   }, []);
 
   return (
-    <section className="journey-menu-section" id="menu" ref={sectionRef} aria-labelledby="journey-menu-title" data-nav-theme="dark">
+    <section className="journey-menu-section" id="menus" ref={sectionRef} aria-labelledby="menus-title" data-nav-theme="dark">
       <CarpetField className="journey-field" />
       <div className="journey-menu-inner">
-        <div className="journey-menu-content">
+        <div className="journey-menu-content" data-reveal>
           <PersianWord className="fa-menu">سفره</PersianWord>
-          <p className="journey-eyebrow">The DAYA menu</p>
-          <h2 id="journey-menu-title">
-            <span className="journey-heading-mask"><span className="journey-heading-line">Made to share.</span></span>
-          </h2>
+          <p className="section-eyebrow">Menus</p>
+          <h2 className="section-title" id="menus-title">Made by hand. Given time.</h2>
           <p className="journey-copy">
-            Our menu moves between fire and freshness: saffron-led plates, bright herbs, citrus, charcoal, and generous dishes designed to travel around the table.
+            Our food is freshly prepared by hand. Dough needs resting. Flavours need time. And we believe there should be room in the day to sit, eat and enjoy the company around you.
+          </p>
+          <p className="journey-copy">
+            Our mother’s recipes guide our cooking, keeping the flavours traditional and authentic. Having grown up in Europe, we bring our own touch to the way we serve some dishes — a different presentation, with the same familiar flavours.
+          </p>
+          <p className="journey-copy">
+            Discover our lunch and dinner menus. Find a favourite, or choose a few dishes to share.
           </p>
           <div className="journey-actions">
-            <DayaButton href={DIGITAL_MENU_URL} label="View menu options" target="_blank" rel="noopener noreferrer" />
+            {MENUS.map((menu) => <DayaButton key={menu.id} href={menu.href} label={menu.label} {...external} />)}
+          </div>
+          <div className="kitchen-hours">
+            <h3>Kitchen hours</h3>
+            <p>Lunch 13:00–17:00 <span aria-hidden="true">·</span> Dinner 19:00–00:00</p>
           </div>
         </div>
 
         <div className="journey-image-row">
-          {journeyImages.map((item, index) => (
+          {menuImages.map((item, index) => (
             <div className="journey-image-shell" key={item.image}>
               <figure className={`journey-image-card journey-image-${index + 1}`}>
                 <img src={media(item.image)} alt={item.alt} loading="lazy" />
@@ -903,61 +627,18 @@ function JourneyMenuDiscovery() {
   );
 }
 
-function SocialGallery() {
-  const sectionRef = useRef(null);
-
-  useLayoutEffect(() => {
-    const ctx = gsap.context(() => {
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-      gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top 78%',
-          once: true,
-        },
-      })
-        .from('.social-heading-line', { yPercent: 110, duration: 0.9, ease: 'power3.out' })
-        .from('.social-handle', { y: 18, duration: 0.7, ease: 'power3.out' }, 0.18)
-        .from('.social-marquee-window', { y: 28, opacity: 0, duration: 0.9, ease: 'power3.out' }, 0.35);
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, []);
-
+// A quiet strip of photographs of the house.
+function HouseStrip() {
   return (
-    <section className="social-section" id="social" ref={sectionRef} aria-labelledby="social-title" data-nav-theme="dark">
-      <header className="social-header">
-        <h2 id="social-title">
-          <span className="social-heading-mask"><span className="social-heading-line">More from DAYA.</span></span>
-        </h2>
-        <a
-          className="social-handle"
-          href="https://www.instagram.com/dayaibiza/"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Follow DAYA on Instagram"
-        >
-          @dayaibiza
-        </a>
-      </header>
-
-      <div className="social-marquee-window" aria-label="DAYA moments from Instagram">
+    <section className="social-section house-strip" aria-label="Impressions of DAYA" data-nav-theme="dark">
+      <div className="social-marquee-window">
         <div className="social-marquee-track">
           {[0, 1].map((groupIndex) => (
             <div className="social-marquee-group" aria-hidden={groupIndex === 1} key={groupIndex}>
-              {socialImages.map((item, index) => (
-                <a
-                  className="social-image-card"
-                  href="https://www.instagram.com/dayaibiza/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  tabIndex={groupIndex === 1 ? -1 : 0}
-                  aria-label={`View DAYA on Instagram, image ${index + 1}`}
-                  key={`${groupIndex}-${item.image}`}
-                >
+              {houseStrip.map((item) => (
+                <figure className="social-image-card" key={`${groupIndex}-${item.image}`}>
                   <img src={media(item.image)} alt={groupIndex === 0 ? item.alt : ''} loading="lazy" />
-                </a>
+                </figure>
               ))}
             </div>
           ))}
@@ -967,77 +648,56 @@ function SocialGallery() {
   );
 }
 
-function OurLocation() {
+function VisitUs() {
   const sectionRef = useRef(null);
-
-  useLayoutEffect(() => {
-    const ctx = gsap.context(() => {
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-      gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top 72%',
-          once: true,
-        },
-      })
-        .from('.location-eyebrow', { y: 14, opacity: 0, duration: 0.65, ease: 'power3.out' })
-        .from('.location-heading-line', { yPercent: 110, duration: 0.95, ease: 'power3.out' }, 0.12)
-        .from('.location-detail', { y: 24, opacity: 0, duration: 0.8, stagger: 0.12, ease: 'power3.out' }, 0.34)
-        .from('.location-map', { x: 34, opacity: 0, duration: 1.05, ease: 'power3.out' }, 0.28);
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, []);
+  useReveal(sectionRef);
 
   return (
-    <section
-      className="location-section"
-      id="location"
-      ref={sectionRef}
-      aria-labelledby="location-title"
-      data-nav-theme="dark"
-    >
+    <section className="location-section" id="visit" ref={sectionRef} aria-labelledby="visit-title" data-nav-theme="dark">
       <div className="location-inner">
         <div className="location-content">
-          <p className="location-eyebrow">Visit DAYA</p>
-          <h2 id="location-title">
-            <span className="location-heading-mask">
-              <span className="location-heading-line">Find us in Ibiza.</span>
-            </span>
-          </h2>
+          <div data-reveal>
+            <p className="section-eyebrow">Visit Us</p>
+            <h2 className="section-title" id="visit-title">Come in. Settle in.</h2>
+            <p className="location-intro">
+              Join us for lunch, dinner, a cup of tea or an evening drink. We look forward to welcoming you.
+            </p>
+          </div>
 
-          <div className="location-details">
-            <section className="location-detail" aria-labelledby="location-address-title">
-              <h3 id="location-address-title">Address</h3>
+          <div className="location-details" data-reveal>
+            <section className="location-detail" aria-labelledby="visit-address-title">
+              <h3 id="visit-address-title">Find us</h3>
               <address>
-                DAYA Restaurant<br />
-                Ibiza, Balearic Islands<br />
-                Spain
+                {VISIT.addressLines.map((line) => <span key={line}>{line}</span>)}
               </address>
             </section>
 
-            <section className="location-detail" aria-labelledby="location-hours-title">
-              <h3 id="location-hours-title">Operational hours</h3>
+            <section className="location-detail" aria-labelledby="visit-hours-title">
+              <h3 id="visit-hours-title">Opening hours</h3>
+              {VISIT.openingDays && <p className="location-days">{VISIT.openingDays}</p>}
               <dl>
-                <div><dt>Monday</dt><dd>Closed</dd></div>
-                <div><dt>Tue – Thu</dt><dd>17:00 – 23:00</dd></div>
-                <div><dt>Fri – Sat</dt><dd>17:00 – 00:00</dd></div>
-                <div><dt>Sunday</dt><dd>13:00 – 22:00</dd></div>
+                <div><dt>Lunch</dt><dd>13:00–17:00</dd></div>
+                <div className="location-siesta"><dt>Closed for siesta</dt><dd>17:00–19:00</dd></div>
+                <div><dt>Dinner</dt><dd>19:00–00:00</dd></div>
               </dl>
             </section>
 
-            <section className="location-detail" aria-labelledby="location-contact-title">
-              <h3 id="location-contact-title">Contact</h3>
-              <a href="mailto:hello@dayaibiza.com">hello@dayaibiza.com</a>
-              <span className="location-phone">+34 XXX XXX XXX</span>
+            <section className="location-detail" aria-labelledby="visit-contact-title">
+              <h3 id="visit-contact-title">Get in touch</h3>
+              {VISIT.phone && <a href={`tel:${VISIT.phone.replace(/[^+\d]/g, '')}`}>{VISIT.phone}</a>}
+              <a href={`mailto:${VISIT.email}`}>{VISIT.email}</a>
             </section>
+          </div>
+
+          <div className="location-actions" data-reveal>
+            <DayaButton href={VISIT.mapsUrl} label="Get Directions" {...external} />
+            <DayaButton className="daya-button-outline" href={CONTACT_URL} label="Contact Us" />
           </div>
         </div>
 
         <div className="location-map">
           <iframe
-            src="https://www.google.com/maps?q=Ibiza%2C%20Spain&output=embed"
+            src={VISIT.mapsEmbedUrl}
             title="DAYA location in Ibiza"
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
@@ -1052,56 +712,35 @@ function OurLocation() {
 function DayaFooter({ home = '' }) {
   return (
     <footer className="site-footer" id="footer" data-nav-theme="light">
-      <div className="footer-inner">
-        <div className="footer-top">
-          <nav className="footer-nav footer-nav-primary" aria-label="Footer navigation">
-            <a href={`${home}#home`}>Home</a>
-            <a href={`${home}#gallery`}>Gallery</a>
-            <a href={`${home}#about`}>About</a>
-            <a href={`${home}#menu`}>Menu</a>
-          </nav>
-
-          <a className="footer-brand" href={`${home}#home`} aria-label="DAYA home">
-            <img src={asset('media/daya-wordmark.avif')} alt="DAYA" />
-          </a>
-
-          <nav className="footer-nav footer-nav-secondary" aria-label="DAYA links">
-            <a href={`${home}#location`}>Location</a>
-            <a href={PLANT_URL}>Plant your seed</a>
-            <a href="https://www.instagram.com/dayaibiza/" target="_blank" rel="noopener noreferrer">Instagram</a>
-            <a href="mailto:hello@dayaibiza.com">Contact</a>
-          </nav>
-        </div>
-
-        <div className="footer-info">
-          <section className="footer-column" aria-labelledby="footer-hours-title">
-            <h2 id="footer-hours-title">Opening hours</h2>
-            <p>Mon: Closed</p>
-            <p>Tue – Thu: 17:00 – 23:00</p>
-            <p>Fri – Sat: 17:00 – 00:00</p>
-            <p>Sun: 13:00 – 22:00</p>
-          </section>
-
-          <section className="footer-column" aria-labelledby="footer-contact-title">
-            <h2 id="footer-contact-title">Contact</h2>
-            <p>DAYA Restaurant</p>
-            <p>Ibiza, Spain</p>
-            <a href="mailto:hello@dayaibiza.com">hello@dayaibiza.com</a>
-          </section>
-
-          <section className="footer-column" aria-labelledby="footer-social-title">
-            <h2 id="footer-social-title">Social</h2>
-            <a href="https://www.instagram.com/dayaibiza/" target="_blank" rel="noopener noreferrer">Instagram</a>
-            <a href="https://www.facebook.com/dayaibiza/" target="_blank" rel="noopener noreferrer">Facebook</a>
-            <a href="mailto:hello@dayaibiza.com">Email</a>
-          </section>
-        </div>
-
-        <div className="footer-bottom">
-          <p>© {new Date().getFullYear()} DAYA · Persian dining in Ibiza · All rights reserved.</p>
-        </div>
+      <div className="footer-simple">
+        <a className="footer-logo" href={`${home}#home`} aria-label="DAYA Ibiza home">
+          <DayaLogo layout="stack" />
+        </a>
+        <p className="footer-tagline">Restaurant · Lounge · Bar</p>
+        <p className="footer-noosh">
+          <span lang="fa" dir="rtl">نوش جان</span>
+          <span aria-hidden="true"> · </span>
+          <span>Nooshe Jan</span>
+        </p>
+        <nav className="footer-links" aria-label="Footer navigation">
+          <a href={`${home}#visit`}>Contact</a>
+          <a href={VISIT.instagram} {...external}>Instagram</a>
+          {VISIT.privacyUrl && <a href={VISIT.privacyUrl}>Privacy Policy</a>}
+          {VISIT.legalUrl && <a href={VISIT.legalUrl}>Legal Notice</a>}
+        </nav>
       </div>
     </footer>
+  );
+}
+
+// On phones, menus, address and contact stay one tap away.
+function QuickBar() {
+  return (
+    <nav className="quick-bar" aria-label="Quick links">
+      <a href="#menus">Menus</a>
+      <a href={VISIT.mapsUrl} {...external}>Directions</a>
+      <a href={CONTACT_URL}>Contact</a>
+    </nav>
   );
 }
 
@@ -1114,6 +753,13 @@ export default function App() {
     if (returnFocus) window.setTimeout(() => menuTriggerRef.current?.focus(), 650);
   };
 
+  // Web fonts change text heights once they load, so scroll positions are measured again afterwards.
+  useEffect(() => {
+    let active = true;
+    document.fonts?.ready.then(() => { if (active) ScrollTrigger.refresh(); });
+    return () => { active = false; };
+  }, []);
+
   return (
     <>
       <a className="skip-link" href="#main-content">Skip to content</a>
@@ -1125,17 +771,15 @@ export default function App() {
       />
       <main id="main-content" tabIndex="-1">
         <Hero />
-        <div id="gallery">
-          <ExperienceSlider />
-        </div>
-        <StoryTimeline />
-        <AboutHistory />
-        <AnarBranchSection />
-        <JourneyMenuDiscovery />
-        <OurLocation />
-        <SocialGallery />
+        <Welcome />
+        <OurHouse />
+        <Story />
+        <Menus />
+        <HouseStrip />
+        <VisitUs />
       </main>
       <DayaFooter />
+      <QuickBar />
     </>
   );
 }

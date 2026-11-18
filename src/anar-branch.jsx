@@ -49,7 +49,7 @@ const MAIN_SHAPE = (() => {
   return [...upper, ...lower.reverse()].join(' ');
 })();
 
-const LEAF_COLOURS = ['#0d5c63', '#08494f', '#1f7d80', '#3c9a94'];
+const LEAF_COLOURS = ['#0b5c5a', '#084745', '#1f7d78', '#3c9a90'];
 
 // Fruits hang from short twigs along the branch.
 const FRUITS = [
@@ -118,10 +118,10 @@ function Fruit({ fruit, index }) {
         <g className="branch-fruit" style={{ animationDelay: `${-index * 1.3}s`, animationDuration: `${4.6 + index * 0.7}s` }}>
           <path d="M0 0V16" fill="none" stroke="#3b2a21" strokeWidth="3.2" strokeLinecap="round" />
           {/* calyx: a pomegranate hangs with its crown pointing down */}
-          <path d="M-13 104L-18 128-9 121-4.500 132 0 122 4.500 132 9 121 18 128 13 104Z" fill="#a8323a" stroke="#6a1422" strokeWidth="1" strokeLinejoin="round" />
+          <path d="M-13 104L-18 128-9 121-4.500 132 0 122 4.500 132 9 121 18 128 13 104Z" fill="#ad4c3a" stroke="#6b271d" strokeWidth="1" strokeLinejoin="round" />
           <path d="M0 12C30 10 51 34 51 63 51 93 29 111 0 111-29 111-51 93-51 63-51 34-30 10 0 12Z" fill="url(#branch-skin)" />
           <path d="M-32 40C-39 55-39 72-32 85" fill="none" stroke="#f5efe5" strokeWidth="5" strokeLinecap="round" opacity="0.32" />
-          <path d="M-9 14C-4 19 4 19 9 14" fill="none" stroke="#5a101b" strokeWidth="1.6" strokeLinecap="round" opacity="0.7" />
+          <path d="M-9 14C-4 19 4 19 9 14" fill="none" stroke="#4f261b" strokeWidth="1.6" strokeLinecap="round" opacity="0.7" />
         </g>
       </g>
     </g>
@@ -133,9 +133,9 @@ function Branch() {
     <svg className="anar-branch" viewBox={`0 0 ${VIEW_W} ${VIEW_H}`} aria-hidden="true" focusable="false">
       <defs>
         <radialGradient id="branch-skin" cx="34%" cy="30%" r="78%">
-          <stop offset="0" stopColor="#c8444c" />
-          <stop offset="0.5" stopColor="#8e1e2d" />
-          <stop offset="1" stopColor="#62111d" />
+          <stop offset="0" stopColor="#c9604a" />
+          <stop offset="0.5" stopColor="#9c3f30" />
+          <stop offset="1" stopColor="#6b271d" />
         </radialGradient>
         {/* The wood is revealed along its own length, so it grows out from the edge. */}
         <mask id="branch-grow" maskUnits="userSpaceOnUse" x="0" y="0" width={VIEW_W} height={VIEW_H}>
@@ -166,32 +166,17 @@ function Branch() {
   );
 }
 
-// ---------- section ----------
+// ---------- animated wrapper ----------
 
-const chapters = [
-  {
-    eyebrow: 'Our emblem · انار',
-    title: 'Why a pomegranate.',
-    body: 'The pomegranate in our emblem is no decoration. In Persia the anar has stood for abundance, generosity and new beginnings for thousands of years. It is what we want every evening at DAYA to feel like.',
-  },
-  {
-    title: 'Woven into the room.',
-    body: 'Like a Persian carpet, DAYA is made of many threads: turquoise tile, aged brass, woven textiles, candlelight and music. Each one carries a little of Persia to the island.',
-  },
-  {
-    title: 'Opened to share.',
-    body: 'A pomegranate is never eaten alone. It is broken open and passed around the table, the way every plate at DAYA arrives in the middle of the table, ready to be shared.',
-  },
-];
-
-export function AnarBranchSection() {
-  const sectionRef = useRef(null);
+// The branch grows in from the edge when it scrolls into view, then sways gently (CSS).
+export function PomegranateBranch({ className = '' }) {
+  const wrapRef = useRef(null);
 
   useLayoutEffect(() => {
     if (reduceMotion()) return undefined;
     const ctx = gsap.context(() => {
       const at = (el) => Number(el.dataset.t) * DRAW;
-      const timeline = gsap.timeline({ scrollTrigger: { trigger: sectionRef.current, start: 'top 68%' } });
+      const timeline = gsap.timeline({ scrollTrigger: { trigger: wrapRef.current, start: 'top 78%' } });
       timeline.fromTo('.branch-reveal', { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: DRAW, ease: 'power1.inOut' }, 0);
       gsap.utils.toArray('.branch-twig').forEach((twig) => {
         timeline.fromTo(twig, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.5, ease: 'power2.out' }, at(twig) + 0.1);
@@ -202,35 +187,13 @@ export function AnarBranchSection() {
       gsap.utils.toArray('.branch-fruit-grow').forEach((fruit) => {
         timeline.from(fruit, { scale: 0, opacity: 0, duration: 1, ease: 'back.out(1.8)', transformOrigin: '50% 0%' }, at(fruit) + 0.5);
       });
-
-      gsap.utils.toArray('.anar-chapter').forEach((chapter) => {
-        gsap.from(chapter.children, {
-          y: 26,
-          opacity: 0,
-          duration: 0.9,
-          stagger: 0.1,
-          ease: 'power3.out',
-          scrollTrigger: { trigger: chapter, start: 'top 84%' },
-        });
-      });
-    }, sectionRef);
+    }, wrapRef);
     return () => ctx.revert();
   }, []);
 
   return (
-    <section className="anar-branch-section" id="anar" ref={sectionRef} aria-labelledby="anar-title" data-nav-theme="dark">
-      <div className="anar-branch-wrap">
-        <Branch />
-      </div>
-      <div className="anar-chapters">
-        {chapters.map((chapter, i) => (
-          <div className="anar-chapter" key={chapter.title}>
-            {chapter.eyebrow && <p className="anar-eyebrow">{chapter.eyebrow}</p>}
-            {i === 0 ? <h2 id="anar-title">{chapter.title}</h2> : <h3>{chapter.title}</h3>}
-            <p className="anar-body">{chapter.body}</p>
-          </div>
-        ))}
-      </div>
-    </section>
+    <div className={`anar-branch-wrap ${className}`.trim()} ref={wrapRef}>
+      <Branch />
+    </div>
   );
 }

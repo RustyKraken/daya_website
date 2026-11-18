@@ -250,7 +250,7 @@ export default function PlantYourSeed() {
       <SiteNav onMenuOpen={() => setMenuOpen(true)} menuOpen={menuOpen} menuTriggerRef={menuTriggerRef} home={SITE_HOME} />
 
       <main id="main-content" tabIndex="-1">
-        <section className={`seed-experience is-${stage}`} aria-labelledby="seed-title" data-nav-theme="light">
+        <section className={`seed-experience is-${stage}`} aria-labelledby="seed-title" data-nav-theme="dark">
           {/* fixed position: the step indicator never moves between stages */}
           <div className="seed-steps-wrap"><StepSeeds stage={stage} /></div>
 

@@ -107,9 +107,9 @@ function WateringCan() {
 function Seed() {
   return (
     <g className="ps-seed" transform={`translate(${SEED_HOME.x} ${SEED_HOME.y})`}>
-      <circle className="ps-seed-halo" r="46" fill="none" stroke="#e9c76b" strokeWidth="1.2" />
+      <circle className="ps-seed-halo" r="46" fill="none" stroke="#884936" strokeWidth="1.2" />
       <g className="ps-seed-art" transform="scale(2.6)">
-        <ellipse cx="2" cy="12" rx="8" ry="2.4" fill="#021c1f" opacity="0.25" />
+        <ellipse cx="2" cy="12" rx="8" ry="2.4" fill="#3b2a21" opacity="0.2" />
         <path d="M0-12C7.6-10 10.4-1.4 8.1 5.8 6 11.6-6 11.6-8.1 5.8-10.4-1.4-7.6-10 0-12Z" fill="url(#ps-aril)" stroke="#5c0516" strokeWidth="0.5" />
         <ellipse cx="0.6" cy="1.6" rx="2.6" ry="5" fill="#f4e7cf" opacity="0.9" />
         <ellipse cx="-3.2" cy="-4.6" rx="2" ry="3.4" fill="#fff" opacity="0.7" transform="rotate(-20)" />
@@ -627,8 +627,8 @@ const PlantScene = forwardRef(function PlantScene({ onStageDone, onProgress }, r
           <stop offset="1" stopColor="#c98f2c" />
         </radialGradient>
         <linearGradient id="ps-beam" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#ffe2a0" stopOpacity="0.4" />
-          <stop offset="1" stopColor="#ffe2a0" stopOpacity="0" />
+          <stop offset="0" stopColor="#f0b84a" stopOpacity="0.45" />
+          <stop offset="1" stopColor="#f0b84a" stopOpacity="0" />
         </linearGradient>
         <linearGradient id="ps-pot" x1="0" x2="1">
           <stop offset="0" stopColor="#7c3a22" />
@@ -692,8 +692,8 @@ const PlantScene = forwardRef(function PlantScene({ onStageDone, onProgress }, r
 
       {/* atmosphere */}
       <circle className="ps-warm" cx="220" cy="170" r="640" fill="url(#ps-warm)" />
-      <path className="ps-frame" d="M140 600V300C140 190 260 140 330 110 370 92 392 74 400 46 408 74 430 92 470 110 540 140 660 190 660 300V600" fill="none" stroke="#d4af37" strokeWidth="1" opacity="0.28" />
-      <path className="ps-frame" d="M164 600V306C164 206 274 160 340 132 378 116 396 100 400 80 404 100 422 116 460 132 526 160 636 206 636 306V600" fill="none" stroke="#d4af37" strokeWidth="0.6" opacity="0.16" />
+      <path className="ps-frame" d="M140 600V300C140 190 260 140 330 110 370 92 392 74 400 46 408 74 430 92 470 110 540 140 660 190 660 300V600" fill="none" stroke="#0b5c5a" strokeWidth="1" opacity="0.22" />
+      <path className="ps-frame" d="M164 600V306C164 206 274 160 340 132 378 116 396 100 400 80 404 100 422 116 460 132 526 160 636 206 636 306V600" fill="none" stroke="#0b5c5a" strokeWidth="0.6" opacity="0.14" />
       <g className="ps-motes">
         {MOTES.map((m, i) => (
           <circle key={i} className="ps-mote" cx={m.x} cy={m.y} r={m.r} style={{ animationDelay: `${m.delay}s`, animationDuration: `${m.dur}s` }} />
@@ -703,11 +703,11 @@ const PlantScene = forwardRef(function PlantScene({ onStageDone, onProgress }, r
       <polygon className="ps-beam" points="0,0 0,0 0,0" fill="url(#ps-beam)" />
 
       {/* pot: back rim and the soil surface */}
-      <ellipse cx="400" cy="896" rx="250" ry="16" fill="#021c1f" opacity="0.35" filter="url(#ps-soft)" />
+      <ellipse cx="400" cy="896" rx="250" ry="16" fill="#3b2a21" opacity="0.22" filter="url(#ps-soft)" />
       <ellipse cx="400" cy="580" rx="190" ry="26" fill="#1a3f40" />
       <ellipse className="ps-soil-top" cx="400" cy="582" rx="178" ry="19" fill="url(#ps-soil-top)" />
       <ellipse className="ps-wet" cx="400" cy="582" rx="178" ry="19" fill="#1b0f08" />
-      <ellipse className="ps-zone" cx={DROP_ZONE.x} cy={DROP_ZONE.y + 2} rx="74" ry="12" fill="none" stroke="#e9c76b" strokeWidth="1.4" strokeDasharray="5 6" />
+      <ellipse className="ps-zone" cx={DROP_ZONE.x} cy={DROP_ZONE.y + 2} rx="74" ry="12" fill="none" stroke="#f1dca0" strokeWidth="1.4" strokeDasharray="5 6" />
 
       {/* the tree */}
       <g className="ps-tree">
@@ -762,10 +762,10 @@ const PlantScene = forwardRef(function PlantScene({ onStageDone, onProgress }, r
       {SOIL_CRUMBS.map((i) => <circle key={i} className="ps-crumb" cx="400" cy="578" r={1.6 + (i % 3)} fill="#4a2f1f" />)}
 
       <WateringCan />
-      {DROPS.map((i) => <circle key={i} className="ps-drop" cx="400" cy="578" r="3.2" fill="#bfe8f0" />)}
+      {DROPS.map((i) => <circle key={i} className="ps-drop" cx="400" cy="578" r="3.2" fill="#5fb3c4" />)}
 
       {/* drag hint */}
-      <path className="ps-hint" id="ps-hint-path" d={`M${SEED_HOME.x} ${SEED_HOME.y}C${SEED_HOME.x + 40} ${SEED_HOME.y - 120} ${BASE_X - 60} ${GROUND_Y - 140} ${BASE_X} ${GROUND_Y - 24}`} fill="none" stroke="#e9c76b" strokeWidth="1.2" strokeDasharray="2 8" strokeLinecap="round" />
+      <path className="ps-hint" id="ps-hint-path" d={`M${SEED_HOME.x} ${SEED_HOME.y}C${SEED_HOME.x + 40} ${SEED_HOME.y - 120} ${BASE_X - 60} ${GROUND_Y - 140} ${BASE_X} ${GROUND_Y - 24}`} fill="none" stroke="#884936" strokeWidth="1.4" strokeDasharray="2 8" strokeLinecap="round" />
       <Seed />
     </svg>
   );
