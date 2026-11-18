@@ -630,7 +630,8 @@ function Menus() {
 // A quiet strip of photographs of the house.
 function HouseStrip() {
   return (
-    <section className="social-section house-strip" aria-label="Impressions of DAYA" data-nav-theme="dark">
+    <section className="social-section house-strip" aria-labelledby="gallery-title" data-nav-theme="dark">
+      <h2 className="section-title" id="gallery-title">Inside DAYA.</h2>
       <div className="social-marquee-window">
         <div className="social-marquee-track">
           {[0, 1].map((groupIndex) => (
@@ -712,6 +713,10 @@ function VisitUs() {
 function DayaFooter({ home = '' }) {
   return (
     <footer className="site-footer" id="footer" data-nav-theme="light">
+      <div className="footer-script" aria-hidden="true" lang="fa" dir="rtl">
+        <span>خوش آمدید</span>
+        <span>نوش جان</span>
+      </div>
       <div className="footer-simple">
         <a className="footer-logo" href={`${home}#home`} aria-label="DAYA Ibiza home">
           <DayaLogo layout="stack" />

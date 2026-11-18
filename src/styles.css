@@ -1892,6 +1892,7 @@ footer[id] {
 
 /* ---------- Photographs of the house ---------- */
 .house-strip { padding: 0 0 var(--section-y); }
+.house-strip .section-title { text-align: center; }
 .house-strip .social-image-card { margin: 0; border-radius: 10px; }
 
 /* ---------- Visit Us ---------- */
@@ -1948,7 +1949,31 @@ footer[id] {
 .site-footer {
   color: var(--cream);
   background: var(--turquoise);
+  position: relative;
+  isolation: isolate;
 }
+
+.footer-script {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  user-select: none;
+  color: var(--cream);
+  opacity: .09;
+  font: 400 clamp(76px, 13vw, 200px)/2 'Noto Nastaliq Urdu', serif;
+  mask-image: linear-gradient(to right, black, transparent 48%, transparent 52%, black);
+}
+
+.footer-script span {
+  position: absolute;
+  white-space: nowrap;
+  transform: rotate(-8deg);
+}
+
+.footer-script span:first-child { top: -0.32em; right: -0.08em; }
+.footer-script span:last-child { bottom: -0.16em; left: -0.08em; }
 
 .footer-simple {
   display: flex;
