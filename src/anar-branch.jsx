@@ -49,7 +49,8 @@ const MAIN_SHAPE = (() => {
   return [...upper, ...lower.reverse()].join(' ');
 })();
 
-const LEAF_COLOURS = ['#0b5c5a', '#084745', '#1f7d78', '#3c9a90'];
+const LEAF_COLOURS = ['#546342', '#40523c', '#77835b', '#93976a'];
+const BLOSSOMS = [0.14, 0.38, 0.54, 0.75, 0.94];
 
 // Fruits hang from short twigs along the branch.
 const FRUITS = [
@@ -132,6 +133,7 @@ function Branch() {
   return (
     <svg className="anar-branch" viewBox={`0 0 ${VIEW_W} ${VIEW_H}`} aria-hidden="true" focusable="false">
       <defs>
+        <path id="anar-petal" d="M0 0C-3-3-11-8-8-13Q-6-17-2-15Q2-19 5-14C9-9 4-3 0 0Z" />
         <radialGradient id="branch-skin" cx="34%" cy="30%" r="78%">
           <stop offset="0" stopColor="#c9604a" />
           <stop offset="0.5" stopColor="#9c3f30" />
@@ -146,6 +148,7 @@ function Branch() {
       <g className="branch-sway">
         <g mask="url(#branch-grow)">
           <polygon points={MAIN_SHAPE} fill="#3b2a21" />
+          <path d={MAIN_D} fill="none" stroke="#a78a69" strokeWidth="1.6" opacity=".65" />
         </g>
         {FRUITS.map((fruit) => (
           <path key={fruit.t} className="branch-twig" data-t={fruit.t} d={fruit.twig} pathLength="1" fill="none" stroke="#3b2a21" strokeWidth="3.4" strokeLinecap="round" strokeDasharray="1 1" />
@@ -161,6 +164,25 @@ function Branch() {
           </g>
         ))}
         {FRUITS.map((fruit, i) => <Fruit key={fruit.t} fruit={fruit} index={i} />)}
+        {BLOSSOMS.map((t, i) => {
+          const p = cubic(MAIN, t);
+          return (
+            <g key={t} transform={`translate(${p.x} ${p.y})`}>
+              <g className="branch-leaf-grow" data-t={t}>
+                <path d="M0 0Q-12 2-24 19" fill="none" stroke="#675440" strokeWidth="2" />
+                <g transform="translate(-24 19)">
+                  {[0, 72, 144, 216, 288].map((angle, j) => (
+                    <use key={angle} href="#anar-petal" transform={`rotate(${angle + i * 11})`} fill={j % 2 ? '#c26b59' : '#d88a74'} />
+                  ))}
+                  <circle r="3.3" fill="#dfb477" />
+                  <g className="branch-falling-petal" style={{ animationDelay: `${-i * 2.3}s` }}>
+                    <use href="#anar-petal" fill="#cb7967" />
+                  </g>
+                </g>
+              </g>
+            </g>
+          );
+        })}
       </g>
     </svg>
   );

@@ -5,7 +5,7 @@
   --sand: #dcc8a3;
   --brown: #3b2a21;
   --red: #884936;
-  --cream: #faf7ef;
+  --cream: #e9dcc6;
   --display: 'Cormorant Garamond', Georgia, serif;
   --sans: 'Manrope', Arial, sans-serif;
   color: var(--brown);
@@ -1418,6 +1418,20 @@ footer[id] {
 .branch-leaf { transform-origin: 0% 50%; --sway: 5deg; animation-duration: 3.4s; }
 .branch-fruit { transform-origin: 50% 0%; --sway: 3.5deg; }
 
+.branch-falling-petal { opacity: 0; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .branch-falling-petal { animation: petal-drift 12s ease-in-out infinite; }
+}
+
+@keyframes petal-drift {
+  0%, 44% { opacity: 0; transform: translate(0, 0) rotate(8deg); }
+  50% { opacity: .8; }
+  68% { transform: translate(-18px, 48px) rotate(-42deg); }
+  84% { opacity: .65; transform: translate(-9px, 95px) rotate(18deg); }
+  100% { opacity: 0; transform: translate(-33px, 145px) rotate(-63deg); }
+}
+
 @keyframes branch-sway {
   from { transform: rotate(calc(var(--sway) * -1)); }
   to { transform: rotate(var(--sway)); }
@@ -1581,7 +1595,7 @@ footer[id] {
 
 .hero-nav[data-theme='dark'] {
   color: var(--turquoise);
-  background: rgba(250, 247, 239, 0.94);
+  background: rgb(233 220 198 / 94%);
   box-shadow: 0 1px 0 rgba(11, 92, 90, 0.12);
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
@@ -2004,7 +2018,7 @@ footer[id] {
   .daya-logo-wordmark { width: 82px; }
   .hero-content { bottom: 104px; }
   .hero-actions .daya-button { flex: 1 1 auto; }
-  .journey-actions { flex-direction: column; align-items: stretch; }
+  .journey-actions { flex-direction: column; align-items: center; }
   .location-actions .daya-button { flex: 1 1 auto; }
   .menu-sublinks { margin-left: 0; }
 
