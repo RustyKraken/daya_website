@@ -631,7 +631,11 @@ function Menus() {
 function HouseStrip() {
   return (
     <section className="social-section house-strip" aria-labelledby="gallery-title" data-nav-theme="dark">
-      <h2 className="section-title" id="gallery-title">Inside DAYA.</h2>
+      <header className="gallery-heading">
+        <p className="section-eyebrow">Gallery</p>
+        <h2 className="section-title" id="gallery-title">Inside DAYA.</h2>
+        <p className="gallery-subtitle">From the bar to the candlelit terrace.</p>
+      </header>
       <div className="social-marquee-window">
         <div className="social-marquee-track">
           {[0, 1].map((groupIndex) => (

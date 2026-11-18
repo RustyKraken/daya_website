@@ -1892,7 +1892,12 @@ footer[id] {
 
 /* ---------- Photographs of the house ---------- */
 .house-strip { padding: 0 0 var(--section-y); }
-.house-strip .section-title { text-align: center; }
+.gallery-heading {
+  padding: 0 var(--section-x) var(--space-heading);
+  text-align: center;
+}
+.gallery-heading .section-title { margin-bottom: 10px; }
+.gallery-subtitle { margin: 0; font-size: 0.9375rem; line-height: 1.5; }
 .house-strip .social-image-card { margin: 0; border-radius: 10px; }
 
 /* ---------- Visit Us ---------- */
