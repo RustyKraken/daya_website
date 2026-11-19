@@ -5,15 +5,14 @@ export const PLANT_URL = `${BASE}plant-your-seed/`;
 export const asset = (path) => `${BASE}${path.replace(/^\/+/, '')}`;
 
 // ---------- Menus ----------
-// Each card has its own link, so lunch, dinner and drinks can be updated independently.
+// Each menu has its own link and can be updated independently.
 // To publish a new card: put the PDF into public/menus/ (e.g. public/menus/lunch.pdf) and set
 // href to asset('menus/lunch.pdf'). Replacing that file later updates the card without touching code.
-// Lunch and dinner currently share the digital food menu; drinks has its own.
+// Food and drinks each have their own digital menu.
 const FOOD_MENU_URL = 'https://www.reservly.at/speisekarte/en/daya/food';
 const DRINKS_MENU_URL = 'https://www.reservly.at/speisekarte/en/daya/drinks';
 export const MENUS = [
-  { id: 'lunch', label: 'Lunch Menu', href: FOOD_MENU_URL },
-  { id: 'dinner', label: 'Dinner Menu', href: FOOD_MENU_URL },
+  { id: 'food', label: 'Food Menu', href: FOOD_MENU_URL },
   { id: 'drinks', label: 'Drinks Menu', href: DRINKS_MENU_URL },
 ];
 
