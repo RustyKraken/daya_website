@@ -1777,8 +1777,8 @@ footer[id] {
   inset: 0;
   z-index: -1;
   background: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 600 540%27%3E%3Cpath fill=%27%23c77562%27 d=%27M300 510C260 473 32 320 32 158 32 23 205-30 300 98 395-30 568 23 568 158c0 162-228 315-268 352Z%27/%3E%3C/svg%3E") center / min(76vw, 650px) 90% no-repeat;
-  opacity: .07;
-  filter: blur(22px);
+  opacity: .16;
+  filter: blur(8px);
   pointer-events: none;
 }
 
